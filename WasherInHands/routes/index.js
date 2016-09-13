@@ -68,7 +68,7 @@ module.exports = function (passport) {
                             if (err) return next(err);
                         });
                     });
-                    return res.json(req.user);
+                    return res.json({'result': req.user});
                 }
             })
         }
