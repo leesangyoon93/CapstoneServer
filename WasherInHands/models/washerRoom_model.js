@@ -5,10 +5,9 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
 
 var WasherRoomSchema = new Schema({
-    _host: {type: Number, ref: 'User'},
+    _host: {type: Schema.Types.ObjectId, ref: 'User'},
     roomName: {
         type: String,
         unique: true
@@ -16,7 +15,8 @@ var WasherRoomSchema = new Schema({
     address: {
         type: String
     },
-    users: [{type: Schema.Types.ObjectId, ref: 'User'}]
+    members: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    washers: [{type: Schema.Types.ObjectId, ref: 'Washer'}]
 });
 
 mongoose.model('WasherRoom', WasherRoomSchema);

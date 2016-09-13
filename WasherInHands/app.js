@@ -1,3 +1,4 @@
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express = require('express');
 var path = require('path');
 var http = require('http');
@@ -15,7 +16,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var app = express();
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:test', function(err) {
+mongoose.connect('mongodb://localhost/washerInHands', function(err) {
   if(err) {
     console.log("DB ERROR :", err);
     throw err;
@@ -25,11 +26,17 @@ mongoose.connect('mongodb://localhost:test', function(err) {
 });
 
 require('./models/user_model');
+require('./models/washerRoom_model');
 var User = mongoose.model('User');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+} else if (process.env.NODE_ENV === 'production') {
+  app.use(compress());
+}
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());
@@ -62,7 +69,7 @@ passport.use('local-login', new LocalStrategy({
       passwordField: 'password',
       passReqToCallback: true
     }, function (req, userId, password, done) {
-      User.findOne({ 'userId': userId}, function (err, user) {
+      User.findOne({'userId': userId}, function (err, user) {
         if (err)
           return done(err);
         if (!user) {
@@ -82,10 +89,8 @@ var isValidPassword = function (user, password) {
 };
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 
 app.use('/', index(passport));
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

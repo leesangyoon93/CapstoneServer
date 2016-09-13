@@ -13,7 +13,8 @@ var UserSchema = new Schema({
         unique: true
     },
     userName: {
-        type: String
+        type: String,
+        unique: false
     },
     password: {
         type: String
@@ -21,7 +22,8 @@ var UserSchema = new Schema({
     created: {
         type: Date,
         default: Date.now()
-    }
+    },
+    washerRooms: [{type: Schema.Types.ObjectId, ref: 'WasherRoom'}]
 });
 
 UserSchema.pre('save', function (next) {
