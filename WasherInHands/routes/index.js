@@ -29,6 +29,7 @@ module.exports = function (passport) {
     });
 
     router.get('/register', function (req, res, next) {
+        console.log(req.body);
         if (!req.user) {
             User.findOne({'userId': req.body.userId}, function(err, user) {
                 if(err) return res.json({'result': 'fail'});
