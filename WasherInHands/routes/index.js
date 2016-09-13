@@ -64,11 +64,13 @@ module.exports = function (passport) {
                     newUser.userName = req.query.userName;
                     newUser.save(function (err) {
                         if (err) throw err;
-                        req.login(user, function (err) {
+                        req.login(newUser, function (err) {
                             if (err) return next(err);
+                            console.log(req.user);
+                            return res.json(req.user);
                         });
                     });
-                    return res.json(req.user);
+                    
                 }
             })
         }
