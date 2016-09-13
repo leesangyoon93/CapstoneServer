@@ -52,17 +52,16 @@ module.exports = function (passport) {
     // });
 
     router.get('/register', function (req, res, next) {
-        console.log(req.get(userId));
         if (!req.user) {
-            User.findOne({'userId': req.get(userId)}, function(err, user) {
+            User.findOne({'userId': req.query.userId}, function(err, user) {
                 if(err) return res.json({'result': 'fail'});
                 if(user)
                     return res.json({'result': 'overlap'});
                 else {
                     var newUser = new User();
-                    newUser.userId = req.get(userId);
-                    newUser.password = req.get(password);
-                    newUser.userName = req.get(userName);
+                    newUser.userId = req.query.userId;
+                    newUser.password = req.query.password;
+                    newUser.userName = req.query.userName;
                     newUser.save(function (err) {
                         if (err) throw err;
                         req.login(user, function (err) {
