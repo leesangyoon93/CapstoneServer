@@ -30,17 +30,24 @@ module.exports = function (passport) {
 
     router.get('/register', function (req, res, next) {
         if (!req.user) {
-            var user = new User();
-            user.userId = req.body.userId;
-            user.password = req.body.password;
-            user.userName = req.body.userName;
-            user.save(function (err) {
-                if (err) throw err;
-                req.login(user, function (err) {
-                    if (err) return next(err);
-                });
-            });
-            return res.json(req.user);
+            User.findOne({'userId': req.body.userId}, function(err, user) {
+                if(err) return res.json({'result': 'fail'});
+                if(user)
+                    return res.json({'result': 'overlap'});
+                else {
+                    var newUser = new User();
+                    newUser.userId = req.body.userId;
+                    newUser.password = req.body.password;
+                    newUser.userName = req.body.userName;
+                    newUser.save(function (err) {
+                        if (err) throw err;
+                        req.login(user, function (err) {
+                            if (err) return next(err);
+                        });
+                    });
+                    return res.json(req.user);
+                }
+            })
         }
     });
 
@@ -103,7 +110,7 @@ module.exports = function (passport) {
     });
 
     router.get('/deleteGroup', function(req, res) {
-
+        req.session.currentRoom.remove();
     });
 
     router.get('/logout', function (req, res) {
