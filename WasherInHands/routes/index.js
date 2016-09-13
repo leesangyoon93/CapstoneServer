@@ -28,18 +28,41 @@ module.exports = function (passport) {
         if (req.user) return res.json(req.user);
     });
 
+    // router.get('/register', function (req, res, next) {
+    //     if (!req.user) {
+    //         User.findOne({'userId': req.body.userId}, function(err, user) {
+    //             if(err) return res.json({'result': 'fail'});
+    //             if(user)
+    //                 return res.json({'result': 'overlap'});
+    //             else {
+    //                 var newUser = new User();
+    //                 newUser.userId = req.body.userId;
+    //                 newUser.password = req.body.password;
+    //                 newUser.userName = req.body.userName;
+    //                 newUser.save(function (err) {
+    //                     if (err) throw err;
+    //                     req.login(user, function (err) {
+    //                         if (err) return next(err);
+    //                     });
+    //                 });
+    //                 return res.json(req.user);
+    //             }
+    //         })
+    //     }
+    // });
+
     router.get('/register', function (req, res, next) {
-        console.log(req.body);
+        console.log(req.get(userId));
         if (!req.user) {
-            User.findOne({'userId': req.body.userId}, function(err, user) {
+            User.findOne({'userId': req.get(userId)}, function(err, user) {
                 if(err) return res.json({'result': 'fail'});
                 if(user)
                     return res.json({'result': 'overlap'});
                 else {
                     var newUser = new User();
-                    newUser.userId = req.body.userId;
-                    newUser.password = req.body.password;
-                    newUser.userName = req.body.userName;
+                    newUser.userId = req.get(userId);
+                    newUser.password = req.get(password);
+                    newUser.userName = req.get(userName);
                     newUser.save(function (err) {
                         if (err) throw err;
                         req.login(user, function (err) {
