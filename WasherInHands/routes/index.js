@@ -65,7 +65,6 @@ module.exports = function (passport) {
                             return res.json(req.user);
                         });
                     });
-                    
                 }
             })
         }

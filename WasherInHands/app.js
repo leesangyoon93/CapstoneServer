@@ -11,12 +11,13 @@ var session = require('express-session');
 var morgan = require('morgan');
 var compress = require('compression');
 var passport = require('passport');
+var async = require('async');
 var bcrypt = require('bcrypt-nodejs');
 var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
 
-mongoose.Promise = global.Promise;
+//mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/washerInHands', function(err) {
   if(err) {
     console.log("DB ERROR :", err);
@@ -58,14 +59,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  done(null, user.id);
 });
 
-passport.deserializeUser(function(user, done) {
-  // User.findOne({'_id': id}, function(err, user) {
-  //   done(err, user);
-  // });
-  done(null, user);
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 passport.use('local-login', new LocalStrategy({
