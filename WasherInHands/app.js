@@ -30,6 +30,7 @@ mongoose.connect('mongodb://localhost/washerInHands', function(err) {
 require('./models/user_model');
 require('./models/washerRoom_model');
 var User = mongoose.model('User');
+passport.use(new LocalStrategy(User.authenticate()));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
