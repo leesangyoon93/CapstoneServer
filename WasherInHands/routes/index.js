@@ -62,7 +62,7 @@ module.exports = function (passport) {
                     newUser.userId = req.body.userId;
                     newUser.password = req.body.password;
                     newUser.userName = req.body.userName;
-                    newUser.isAdmin = req.body.isAdmin;
+                    newUser.isAdmin = false;
                     newUser.save(function (err) {
                         if (err) throw err;
                         req.login(newUser, function (err) {
