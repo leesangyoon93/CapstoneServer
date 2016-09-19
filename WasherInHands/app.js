@@ -1,4 +1,5 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+var config = require('./config/config');
 var express = require('express');
 var path = require('path');
 var http = require('http');
@@ -15,7 +16,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
 
-//mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/washerInHands', function(err) {
   if(err) {
     console.log("DB ERROR :", err);
@@ -28,6 +29,7 @@ mongoose.connect('mongodb://localhost/washerInHands', function(err) {
 require('./models/user_model');
 require('./models/washerRoom_model');
 var User = mongoose.model('User');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -58,8 +60,9 @@ app.use(passport.session());
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
+
 passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
+  User.findOne({'_id': id}, function(err, user) {
     done(err, user);
   });
 });
