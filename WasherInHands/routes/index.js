@@ -6,11 +6,11 @@ var User = mongoose.model('User');
 var WasherRoom = mongoose.model('WasherRoom');
 
 /* GET home page. */
-module.exports = function (passport) {
+module.exports = function(passport) {
     router.get('/', function (req, res) {
         res.render('index');
     });
-
+    
     router.post('/login', passport.authenticate('local-login', {
         failureRedirect: '/',
         passReqToCallback: true
@@ -47,9 +47,9 @@ module.exports = function (passport) {
 
     router.post('/register', function (req, res, next) {
         if (!req.user) {
-            User.findOne({'userId': req.body.userId}, function(err, user) {
-                if(err) return res.json({'result': 'fail'});
-                if(user)
+            User.findOne({'userId': req.body.userId}, function (err, user) {
+                if (err) return res.json({'result': 'fail'});
+                if (user)
                     return res.json({'result': 'overlap'});
                 else {
                     var newUser = new User();
@@ -70,7 +70,7 @@ module.exports = function (passport) {
         }
     });
 
-    router.get('/getUser', function(req, res) {
+    router.get('/getUser', function (req, res) {
         console.log(req.user);
         // User.findOne({'_id': req.body._id}, function(err, user) {
         //     if(err) throw err;
@@ -78,7 +78,7 @@ module.exports = function (passport) {
         //         return res.json(user);
         //     else return res.json(null);
         // })
-        if(req.user)
+        if (req.user)
             return res.json(req.user);
         else
             return res.json({'result': 'fail'});
@@ -113,12 +113,9 @@ module.exports = function (passport) {
         return res.json(req.user.washerRooms);
     });
 
-    
-    
-    
-    
+
     // inner group
-    router.post('/showGroup', function(req, res) {
+    router.post('/showGroup', function (req, res) {
         WasherRoom.findOne({'_id': req.body.id}, function (err, washerRoom) {
             req.session.currentRoom = washerRoom;
             return res.json(washerRoom);
@@ -138,11 +135,11 @@ module.exports = function (passport) {
         return res.json(req.session.currentRoom.members);
     });
 
-    router.post('/saveGroup', function(req, res) {
-        
+    router.post('/saveGroup', function (req, res) {
+
     });
 
-    router.get('/deleteGroup', function(req, res) {
+    router.get('/deleteGroup', function (req, res) {
         req.session.currentRoom.remove();
     });
 
