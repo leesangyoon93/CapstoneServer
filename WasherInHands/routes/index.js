@@ -51,7 +51,7 @@ module.exports = function (passport) {
     //     }
     // });
 
-    router.get('/register', function (req, res, next) {
+    router.post('/register', function (req, res, next) {
         if (!req.user) {
             User.findOne({'userId': req.query.userId}, function(err, user) {
                 if(err) return res.json({'result': 'fail'});
