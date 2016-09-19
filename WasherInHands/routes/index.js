@@ -11,20 +11,6 @@ module.exports = function (passport) {
         res.render('index');
     });
 
-    router.get('/getUser', function(req, res) {
-        console.log(req.user);
-        // User.findOne({'_id': req.body._id}, function(err, user) {
-        //     if(err) throw err;
-        //     if(user)
-        //         return res.json(user);
-        //     else return res.json(null);
-        // })
-        if(req.user)
-            return res.json(req.user);
-        else
-            return res.json({'result': 'fail'});
-    });
-
     router.post('/login', passport.authenticate('local-login', {
         failureRedirect: '/',
         passReqToCallback: true
@@ -83,6 +69,20 @@ module.exports = function (passport) {
                 }
             })
         }
+    });
+
+    router.get('/getUser', function(req, res) {
+        console.log(req.user);
+        // User.findOne({'_id': req.body._id}, function(err, user) {
+        //     if(err) throw err;
+        //     if(user)
+        //         return res.json(user);
+        //     else return res.json(null);
+        // })
+        if(req.user)
+            return res.json(req.user);
+        else
+            return res.json({'result': 'fail'});
     });
 
     router.post('/createGroup', function (req, res) {
