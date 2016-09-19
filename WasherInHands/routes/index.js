@@ -16,6 +16,7 @@ module.exports = function(passport) {
         passReqToCallback: true
     }), function (req, res) {
         console.log(req.user);
+        req.session.currentUser = user;
         if (req.user) return res.json(req.user);
         else
             return res.json({result: 'fail'});
@@ -144,7 +145,8 @@ module.exports = function(passport) {
     });
 
     router.get('/logout', function (req, res) {
-        console.log(req.user);
+        console.log(req.session.currentUser.userId);
+        console.log(req.user.userId);
         req.logout();
         return res.json({'result': 'success'});
     });
