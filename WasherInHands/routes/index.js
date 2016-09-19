@@ -52,6 +52,7 @@ module.exports = function (passport) {
     // });
 
     router.post('/register', function (req, res, next) {
+        console.log(req.body);
         if (!req.user) {
             User.findOne({'userId': req.query.userId}, function(err, user) {
                 if(err) return res.json({'result': 'fail'});
