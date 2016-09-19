@@ -20,7 +20,8 @@ var UserSchema = new Schema({
         type: String
     },
     isAdmin: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     created: {
         type: Date,
