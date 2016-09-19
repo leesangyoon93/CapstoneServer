@@ -26,6 +26,8 @@ module.exports = function (passport) {
         passReqToCallback: true
     }), function (req, res) {
         if (req.user) return res.json(req.user);
+        else
+            return res.json({result: 'fail'});
     });
 
     // router.get('/register', function (req, res, next) {
