@@ -148,6 +148,7 @@ module.exports = function (passport) {
     });
 
     router.get('/logout', function (req, res) {
+        console.log(req.user);
         req.logout();
         return res.json({'result': 'success'});
     });
