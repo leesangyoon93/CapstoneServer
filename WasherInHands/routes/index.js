@@ -29,6 +29,7 @@ module.exports = function (passport) {
         failureRedirect: '/',
         passReqToCallback: true
     }), function (req, res) {
+        console.log(req.user);
         if (req.user) return res.json(req.user);
         else
             return res.json({result: 'fail'});
@@ -73,6 +74,7 @@ module.exports = function (passport) {
                     newUser.save(function (err) {
                         if (err) throw err;
                         req.login(newUser, function (err) {
+                            console.log(req.user);
                             if (err) return next(err);
                             return res.json(req.user);
                         });
