@@ -3,19 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="/js/user.js"></script>
 </head>
 <body>
+<button><a href="/logout">로그아웃</a></button>
+<h4>Register</h4>
 <form action="/register" method="post">
     <input type="text" name="userId">
     <input type="password" name="password">
     <input type="text" name="userName">
     <input type="submit" value="submit">
 </form>
-
+<h4>Login</h4>
 <form action="/login" method="post">
     <input type="text" name="userId">
     <input type="password" name="password">
     <input type="submit" value="submit">
 </form>
+<h4>CreateGroup</h4>
+<form action="/createGroup" method="post">
+    <input type="text" name="roomName">
+    <input type="text" name="address">
+    <input type="submit" value="submit">
+</form>
+
+<h4>모든 방 목록(클릭하면 조인)</h4>
+<div id="wrap_allGroupList"></div>
+
+<h4>현재 사용자가 가입된 방 목록</h4>
+<div id="wrap_groupList"></div>
+
+<h4>현재 들어온 방의 멤버들</h4>
+<div id="wrap_groupMember"></div>
+
+<h4>현재 들어와있는 방</h4>
+<div id="currentRoom"></div>
+<button id="deleteGroup">현재 그룹 삭제</button>
 </body>
 </html>

@@ -4,11 +4,11 @@ var bcrypt = require("bcrypt-nodejs");
 var router = express.Router();
 var User = mongoose.model('User');
 var WasherRoom = mongoose.model('WasherRoom');
+var ObjectId=require('mongodb').ObjectId;
 
 /* GET home page. */
 module.exports = function(passport) {
     router.get('/', function (req, res) {
-        console.log(req.user);
         res.render('index');
     });
     
@@ -16,35 +16,9 @@ module.exports = function(passport) {
         failureRedirect: '/',
         passReqToCallback: true
     }), function (req, res) {
-        console.log(req.user);
         if (req.user) return res.json(req.user);
-        else
-            return res.json({result: 'fail'});
-
+        else return res.json({result: 'fail'});
     });
-
-    // router.get('/register', function (req, res, next) {
-    //     if (!req.user) {
-    //         User.findOne({'userId': req.body.userId}, function(err, user) {
-    //             if(err) return res.json({'result': 'fail'});
-    //             if(user)
-    //                 return res.json({'result': 'overlap'});
-    //             else {
-    //                 var newUser = new User();
-    //                 newUser.userId = req.body.userId;
-    //                 newUser.password = req.body.password;
-    //                 newUser.userName = req.body.userName;
-    //                 newUser.save(function (err) {
-    //                     if (err) throw err;
-    //                     req.login(user, function (err) {
-    //                         if (err) return next(err);
-    //                     });
-    //                 });
-    //                 return res.json(req.user);
-    //             }
-    //         })
-    //     }
-    // });
 
     router.post('/register', function (req, res, next) {
         if (!req.user) {
@@ -54,17 +28,13 @@ module.exports = function(passport) {
                     return res.json({'result': 'overlap'});
                 else {
                     var newUser = new User();
-                    newUser.userId = "test1";
-                    newUser.password = "1234";
-                    newUser.userName = "name";
-                    // newUser.userId = req.body.userId;
-                    // newUser.password = req.body.password;
-                    // newUser.userName = req.body.userName;
+                    newUser.userId = req.body.userId;
+                    newUser.password = req.body.password;
+                    newUser.userName = req.body.userName;
                     newUser.isAdmin = false;
                     newUser.save(function (err) {
                         if (err) throw err;
                         req.login(newUser, function (err) {
-                            console.log(req.user);
                             if (err) return next(err);
                             return res.json(req.user);
                         });
@@ -75,13 +45,6 @@ module.exports = function(passport) {
     });
 
     router.get('/getUser', function (req, res) {
-        console.log(req.user);
-        // User.findOne({'_id': req.body._id}, function(err, user) {
-        //     if(err) throw err;
-        //     if(user)
-        //         return res.json(user);
-        //     else return res.json(null);
-        // })
         if (req.user)
             return res.json(req.user);
         else
@@ -89,54 +52,93 @@ module.exports = function(passport) {
     });
 
     router.post('/createGroup', function (req, res) {
-        var washerRoom = new WasherRoom();
-        washerRoom._host = req.user;
-        washerRoom.roomName = "room3";
-        washerRoom.address = 'address1';
-        washerRoom.members.push(req.user);
-        washerRoom.save();
-        req.user.washerRooms.push(washerRoom);
-        req.user.save();
-        req.session.currentRoom = washerRoom;
-        return res.json(washerRoom);
+        if(req.user) {
+            var washerRoom = new WasherRoom();
+            washerRoom._host = req.user;
+            washerRoom.roomName = req.body.roomName;
+            washerRoom.address = req.body.address;
+            washerRoom.members.push(req.user);
+            washerRoom.save();
+            req.user.washerRooms.push(washerRoom);
+            req.user.save();
+            req.session.currentRoom = washerRoom;
+            return res.json(washerRoom);
+        }
+        else return res.json({'result': 'fail'});
     });
 
     router.post('/joinGroup', function (req, res) {
-        WasherRoom.findOne({'_id': req.body.id}, function (err, washerRoom) {
+        // 중복검사( 이미 가입되어 있으면 안되게 )
+        WasherRoom.findOne({'roomName': req.body.roomName}, function (err, washerRoom) {
             if (err) throw err;
             if (washerRoom) {
                 washerRoom.members.push(req.user);
                 req.user.washerRooms.push(washerRoom);
                 washerRoom.save();
                 req.user.save();
+                req.session.currentRoom = washerRoom;
+                return res.json(washerRoom);
             }
+            else
+                return res.json({'result': 'fail'});
         });
     });
 
     router.get('/showJoinedGroup', function (req, res) {
-        return res.json(req.user.washerRooms);
+        var groupArray = [];
+        var count = 0;
+        
+        for(var i=0; i<req.user.washerRooms.length; i++) {
+            var id = new ObjectId(req.user.washerRooms[i]);
+            WasherRoom.findById(id, function(err, washerRoom) {
+                if(err) throw err;
+                if(washerRoom) {
+                    groupArray.push(washerRoom);
+                    count++;
+                }
+                else count++;
+                
+                if(count == req.user.washerRooms.length) {
+                    return res.json(groupArray);
+                }
+            })
+        }
     });
 
 
     // inner group
     router.post('/showGroup', function (req, res) {
-        WasherRoom.findOne({'_id': req.body.id}, function (err, washerRoom) {
+        WasherRoom.findOne({'roomName': req.body.roomName}, function (err, washerRoom) {
             req.session.currentRoom = washerRoom;
             return res.json(washerRoom);
         });
     });
 
-    router.post('/showGroupMember', function (req, res) {
-        // WasherRoom.findOne({'_id': req.body.id}).exec(function (err, washerRoom) {
-        //     if (err) throw err;
-        //     if (washerRoom) {
-        //         var users = {};
-        //         for (var i in washerRoom.members)
-        //             users[i] = washerRoom.members[i].userName;
-        //     }
-        //     return res.json(users); // or res.json(washerRoom.members) check
-        // })
-        return res.json(req.session.currentRoom.members);
+    router.get('/showAllGroup', function(req, res) {
+        WasherRoom.find().exec(function(err, washerRooms) {
+            return res.json(washerRooms);
+        })
+    });
+    
+    router.get('/showGroupMember', function (req, res) {
+        var memberArray = [];
+        var count = 0;
+
+        for(var i=0; i<req.session.currentRoom.members.length; i++) {
+            var id = new ObjectId(req.session.currentRoom.members[i]);
+            User.findById(id, function(err, user) {
+                if(err) throw err;
+                if(user) {
+                    memberArray.push(user);
+                    count++;
+                }
+                else count++;
+
+                if(count == req.session.currentRoom.members.length) {
+                    return res.json(memberArray);
+                }
+            })
+        }
     });
 
     router.post('/saveGroup', function (req, res) {
@@ -144,11 +146,16 @@ module.exports = function(passport) {
     });
 
     router.get('/deleteGroup', function (req, res) {
-        req.session.currentRoom.remove();
+        WasherRoom.findOne({'roomName': req.session.currentRoom.roomName}, function(err, washerRoom) {
+            if(err) throw err;
+            if(washerRoom) {
+                washerRoom.remove();
+                req.session.currentRoom = null;
+            }
+        });
     });
 
     router.get('/logout', function (req, res) {
-        console.log(req.user.userId);
         req.logout();
         return res.json({'result': 'success'});
     });
