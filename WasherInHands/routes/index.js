@@ -53,9 +53,13 @@ module.exports = function (passport) {
 
     router.post('/createGroup', function (req, res) {
         if (req.user) {
+            console.log('들어옴');
             WasherRoom.findOne({'roomName': req.body.roomName}, function (err, washerRoom) {
                 if (err) return res.json({'result': 'fail'});
-                if (washerRoom) return res.json({'result': 'overlap'});
+                if (washerRoom) {
+                    console.log('중복');
+                    return res.json({'result': 'overlap'});
+                }
                 else {
                     var newWasherRoom = new WasherRoom();
                     newWasherRoom._host = req.user;
@@ -75,7 +79,10 @@ module.exports = function (passport) {
                 }
             })
         }
-        else return res.json({'result': 'fail'});
+        else {
+            console.log('안들어옴');
+            return res.json({'result': 'fail'});
+        }
     });
 
     router.post('/joinGroup', function (req, res) {
