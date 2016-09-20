@@ -29,6 +29,7 @@ module.exports = function (passport) {
     };
 
     router.get('/getUser', function(req, res) {
+        console.log(req.query.userId);
         User.findOne({'userId': req.query.userId}, function (err, user) {
             console.log(user);
             if (err) throw err;
