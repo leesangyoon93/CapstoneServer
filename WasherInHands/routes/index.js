@@ -8,6 +8,7 @@ var WasherRoom = mongoose.model('WasherRoom');
 /* GET home page. */
 module.exports = function(passport) {
     router.get('/', function (req, res) {
+        console.log(req.user);
         res.render('index');
     });
     
@@ -53,9 +54,12 @@ module.exports = function(passport) {
                     return res.json({'result': 'overlap'});
                 else {
                     var newUser = new User();
-                    newUser.userId = req.body.userId;
-                    newUser.password = req.body.password;
-                    newUser.userName = req.body.userName;
+                    newUser.userId = "test1";
+                    newUser.password = "1234";
+                    newUser.userName = "name";
+                    // newUser.userId = req.body.userId;
+                    // newUser.password = req.body.password;
+                    // newUser.userName = req.body.userName;
                     newUser.isAdmin = false;
                     newUser.save(function (err) {
                         if (err) throw err;
