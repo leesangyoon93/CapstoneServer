@@ -29,10 +29,12 @@ module.exports = function (passport) {
     };
 
     router.get('/getUser', function(req, res) {
-        var user = getUser(req.query.userId);
-        console.log(user);
-        if(user) return res.json(user);
-        else return res.json({'result': 'fail'});
+        User.findOne({'userId': req.query.userId}, function (err, user) {
+            console.log(user);
+            if (err) throw err;
+            if (user) return res.json(user);
+            else return res.json({'result': 'fail'});
+        })
     });
 
     router.post('/login', passport.authenticate('local-login', {
