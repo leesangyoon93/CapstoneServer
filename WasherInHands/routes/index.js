@@ -70,6 +70,7 @@ module.exports = function (passport) {
                         if (err) return res.json({'result': 'fail'});
                     });
                     req.session.currentRoom = newWasherRoom;
+                    console.log(newWasherRoom);
                     return res.json(newWasherRoom);
                 }
             })
