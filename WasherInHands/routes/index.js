@@ -4,14 +4,14 @@ var bcrypt = require("bcrypt-nodejs");
 var router = express.Router();
 var User = mongoose.model('User');
 var WasherRoom = mongoose.model('WasherRoom');
-var ObjectId=require('mongodb').ObjectId;
+var ObjectId = require('mongodb').ObjectId;
 
 /* GET home page. */
-module.exports = function(passport) {
+module.exports = function (passport) {
     router.get('/', function (req, res) {
         res.render('index');
     });
-    
+
     router.post('/login', passport.authenticate('local-login', {
         failureRedirect: '/',
         passReqToCallback: true
@@ -52,17 +52,27 @@ module.exports = function(passport) {
     });
 
     router.post('/createGroup', function (req, res) {
-        if(req.user) {
-            var washerRoom = new WasherRoom();
-            washerRoom._host = req.user;
-            washerRoom.roomName = req.body.roomName;
-            washerRoom.address = req.body.address;
-            washerRoom.members.push(req.user);
-            washerRoom.save();
-            req.user.washerRooms.push(washerRoom);
-            req.user.save();
-            req.session.currentRoom = washerRoom;
-            return res.json(washerRoom);
+        if (req.user) {
+            WasherRoom.findOne({'roomName': req.body.roomName}, function (err, washerRoom) {
+                if (err) return res.json({'result': 'fail'});
+                if (washerRoom) return res.json({'result': 'overlap'});
+                else {
+                    var newWasherRoom = new WasherRoom();
+                    newWasherRoom._host = req.user;
+                    newWasherRoom.roomName = req.body.roomName;
+                    newWasherRoom.address = req.body.address;
+                    newWasherRoom.members.push(req.user);
+                    newWasherRoom.save(function (err) {
+                        if (err) return res.json({'result': 'fail'});
+                    });
+                    req.user.washerRooms.push(newWasherRoom);
+                    req.user.save(function (err) {
+                        if (err) return res.json({'result': 'fail'});
+                    });
+                    req.session.currentRoom = newWasherRoom;
+                    return res.json(newWasherRoom);
+                }
+            })
         }
         else return res.json({'result': 'fail'});
     });
@@ -87,18 +97,18 @@ module.exports = function(passport) {
     router.get('/showJoinedGroup', function (req, res) {
         var groupArray = [];
         var count = 0;
-        
-        for(var i=0; i<req.user.washerRooms.length; i++) {
+
+        for (var i = 0; i < req.user.washerRooms.length; i++) {
             var id = new ObjectId(req.user.washerRooms[i]);
-            WasherRoom.findById(id, function(err, washerRoom) {
-                if(err) throw err;
-                if(washerRoom) {
+            WasherRoom.findById(id, function (err, washerRoom) {
+                if (err) throw err;
+                if (washerRoom) {
                     groupArray.push(washerRoom);
                     count++;
                 }
                 else count++;
-                
-                if(count == req.user.washerRooms.length) {
+
+                if (count == req.user.washerRooms.length) {
                     return res.json(groupArray);
                 }
             })
@@ -114,27 +124,27 @@ module.exports = function(passport) {
         });
     });
 
-    router.get('/showAllGroup', function(req, res) {
-        WasherRoom.find().exec(function(err, washerRooms) {
+    router.get('/showAllGroup', function (req, res) {
+        WasherRoom.find().exec(function (err, washerRooms) {
             return res.json(washerRooms);
         })
     });
-    
+
     router.get('/showGroupMember', function (req, res) {
         var memberArray = [];
         var count = 0;
 
-        for(var i=0; i<req.session.currentRoom.members.length; i++) {
+        for (var i = 0; i < req.session.currentRoom.members.length; i++) {
             var id = new ObjectId(req.session.currentRoom.members[i]);
-            User.findById(id, function(err, user) {
-                if(err) throw err;
-                if(user) {
+            User.findById(id, function (err, user) {
+                if (err) throw err;
+                if (user) {
                     memberArray.push(user);
                     count++;
                 }
                 else count++;
 
-                if(count == req.session.currentRoom.members.length) {
+                if (count == req.session.currentRoom.members.length) {
                     return res.json(memberArray);
                 }
             })
@@ -146,9 +156,9 @@ module.exports = function(passport) {
     });
 
     router.get('/deleteGroup', function (req, res) {
-        WasherRoom.findOne({'roomName': req.session.currentRoom.roomName}, function(err, washerRoom) {
-            if(err) throw err;
-            if(washerRoom) {
+        WasherRoom.findOne({'roomName': req.session.currentRoom.roomName}, function (err, washerRoom) {
+            if (err) throw err;
+            if (washerRoom) {
                 washerRoom.remove();
                 req.session.currentRoom = null;
             }
