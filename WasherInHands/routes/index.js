@@ -30,6 +30,7 @@ module.exports = function (passport) {
 
     router.get('/getUser', function(req, res) {
         var user = getUser(req.query.userId);
+        console.log(user);
         if(user) return res.json(user);
         else return res.json({'result': 'fail'});
     });
