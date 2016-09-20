@@ -52,8 +52,6 @@ module.exports = function (passport) {
     });
 
     router.post('/createGroup', function (req, res) {
-        if (req.user) {
-            console.log('들어옴');
             WasherRoom.findOne({'roomName': req.body.roomName}, function (err, washerRoom) {
                 if (err) return res.json({'result': 'fail'});
                 if (washerRoom) {
@@ -62,27 +60,27 @@ module.exports = function (passport) {
                 }
                 else {
                     var newWasherRoom = new WasherRoom();
-                    newWasherRoom._host = req.user;
-                    newWasherRoom.roomName = req.body.roomName;
-                    newWasherRoom.address = req.body.address;
-                    newWasherRoom.members.push(req.user);
-                    newWasherRoom.save(function (err) {
-                        if (err) return res.json({'result': 'fail'});
+                    User.findOne({'userId': req.body.userId}, function(err, user) {
+                        if(err) return res.json({'result': 'fail'});
+                        if(user) {
+                            newWasherRoom._host = user;
+                            newWasherRoom.roomName = req.body.roomName;
+                            newWasherRoom.address = req.body.address;
+                            newWasherRoom.members.push(user);
+                            newWasherRoom.save(function (err) {
+                                if (err) return res.json({'result': 'fail'});
+                            });
+                            user.washerRooms.push(newWasherRoom);
+                            user.save(function (err) {
+                                if (err) return res.json({'result': 'fail'});
+                            });
+                            req.session.currentRoom = newWasherRoom;
+                            return res.json(newWasherRoom);
+                        }
+                        else return res.json({'result': 'fail'});
                     });
-                    req.user.washerRooms.push(newWasherRoom);
-                    req.user.save(function (err) {
-                        if (err) return res.json({'result': 'fail'});
-                    });
-                    req.session.currentRoom = newWasherRoom;
-                    console.log(newWasherRoom);
-                    return res.json(newWasherRoom);
                 }
             })
-        }
-        else {
-            console.log('안들어옴');
-            return res.json({'result': 'fail'});
-        }
     });
 
     router.post('/joinGroup', function (req, res) {
