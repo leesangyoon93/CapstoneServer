@@ -28,6 +28,12 @@ module.exports = function (passport) {
         })
     };
 
+    router.get('/getUser', function(req, res) {
+        var user = getUser(req.query.userId);
+        if(user) return res.json(user);
+        else return res.json({'result': 'fail'});
+    });
+
     router.post('/login', passport.authenticate('local-login', {
         failureRedirect: '/',
         passReqToCallback: true
