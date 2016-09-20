@@ -63,6 +63,7 @@ module.exports = function (passport) {
 
     router.post('/createGroup', function (req, res) {
         var washerRoom = getWasherRoom(req.body.roomName);
+        console.log(washerRoom);
         if(washerRoom) return res.json({'result': 'overlap'});
         else {
             var user = getUser(req.body.userId);
