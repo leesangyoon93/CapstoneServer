@@ -109,6 +109,7 @@ module.exports = function (passport) {
                 else count++;
 
                 if (count == req.user.washerRooms.length) {
+                    console.log(groupArray);
                     return res.json(groupArray);
                 }
             })
