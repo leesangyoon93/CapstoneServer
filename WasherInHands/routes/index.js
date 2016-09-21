@@ -7,7 +7,7 @@ var WasherRoom = mongoose.model('WasherRoom');
 var ObjectId = require('mongodb').ObjectId;
 
 /* GET home page. */
-module.exports = function (passport) {
+module.exports = function () {
     router.get('/', function (req, res) {
         res.render('index');
     });
@@ -37,12 +37,16 @@ module.exports = function (passport) {
         })
     });
 
-    router.post('/login', passport.authenticate('local-login', {
-        failureRedirect: '/',
-        passReqToCallback: true
-    }), function (req, res) {
-        if (req.user) return res.json(req.user);
-        else return res.json({result: 'fail'});
+    router.post('/login', function (req, res) {
+        User.findOne({'userId': req.body.userId}, function (err, user) {
+            if (err) return res.json({'result': 'fail'});
+            if (user) {
+                if (bcrypt.compareSync(req.body.password, user.password))
+                    return res.json(user);
+                else return res.json({'result': 'fail_pw'});
+            }
+            else return res.json({'result': 'fail_id'});
+        })
     });
 
     router.post('/register', function (req, res, next) {
@@ -66,10 +70,10 @@ module.exports = function (passport) {
         });
     });
 
-    router.post('/editPassword', function(req, res) {
-        User.findOne({'userId': req.body.userId}, function(err, user) {
-            if(err) return res.json({'result': 'fail'});
-            if(user) {
+    router.post('/editPassword', function (req, res) {
+        User.findOne({'userId': req.body.userId}, function (err, user) {
+            if (err) return res.json({'result': 'fail'});
+            if (user) {
                 user.password = req.body.password;
                 user.save();
                 return res.json({'result': 'success'});
