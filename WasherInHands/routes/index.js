@@ -132,9 +132,9 @@ module.exports = function (passport) {
     });
 
     router.get('/searchGroup', function(req, res) {
-        var search = req.query.searchName.replace(/\s/gi, '');
+        var search = req.query.searchName;
         console.log(search);
-
+        search = search.replace(/\s/gi, '');
         WasherRoom.find({'roomName': {"$regex": search}}, function(err, washerRooms) {
             if(err) return res.json({'result': 'fail'});
             if(washerRooms) {
