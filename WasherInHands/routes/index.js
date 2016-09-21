@@ -182,11 +182,11 @@ module.exports = function (passport) {
     // inner group
     router.get('/getHost', function (req, res) {
         WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
-            console.log(washerRoom._host.userId);
             if (err) return res.json({'result': 'fail'});
             if (washerRoom) {
                 var id = new ObjectId(washerRoom._host);
                 User.findById(id, function(err, user) {
+                    console.log(user.userId);
                     if(err) return res.json({'result': 'fail'});
                     if(user) return res.json({'result': 'success', 'userId': user.userId});
                     else return res.json({'result': 'fail'});
