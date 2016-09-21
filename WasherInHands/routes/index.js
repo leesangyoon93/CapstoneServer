@@ -43,9 +43,9 @@ module.exports = function (passport) {
             if (user) {
                 if (bcrypt.compareSync(req.body.password, user.password))
                     return res.json(user);
-                else return res.json({'result': 'fail_pw'});
+                else return res.json({'result': 'failPw'});
             }
-            else return res.json({'result': 'fail_id'});
+            else return res.json({'result': 'failId'});
         })
     });
 
