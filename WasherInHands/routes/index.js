@@ -7,26 +7,26 @@ var WasherRoom = mongoose.model('WasherRoom');
 var ObjectId = require('mongodb').ObjectId;
 
 /* GET home page. */
-module.exports = function () {
+module.exports = function (passport) {
     router.get('/', function (req, res) {
         res.render('index');
     });
 
-    var getUser = function (userId) {
-        User.findOne({'userId': userId}, function (err, user) {
-            if (err) throw err;
-            if (user) return user;
-            else return null;
-        })
-    };
-
-    var getWasherRoom = function (roomName) {
-        WasherRoom.findOne({'roomName': roomName}, function (err, washerRoom) {
-            if (err) throw err;
-            if (washerRoom) return washerRoom;
-            else return null;
-        })
-    };
+    // var getUser = function (userId) {
+    //     User.findOne({'userId': userId}, function (err, user) {
+    //         if (err) throw err;
+    //         if (user) return user;
+    //         else return null;
+    //     })
+    // };
+    //
+    // var getWasherRoom = function (roomName) {
+    //     WasherRoom.findOne({'roomName': roomName}, function (err, washerRoom) {
+    //         if (err) throw err;
+    //         if (washerRoom) return washerRoom;
+    //         else return null;
+    //     })
+    // };
 
     router.get('/getUser', function (req, res) {
         User.findOne({'userId': req.query.userId}, function (err, user) {

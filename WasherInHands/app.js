@@ -10,8 +10,10 @@ var methodOverride = require('method-override');
 var session = require('express-session');
 var morgan = require('morgan');
 var compress = require('compression');
+var passport = require('passport');
 var async = require('async');
 var bcrypt = require('bcrypt-nodejs');
+var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
 
@@ -53,9 +55,46 @@ app.use(session({
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findOne({'_id':id}, function(err, user) {
+    done(err, user);
+  });
+});
+
+passport.use('local-login', new LocalStrategy({
+      usernameField: 'userId',
+      passwordField: 'password',
+      passReqToCallback: true
+    }, function (req, userId, password, done) {
+      User.findOne({'userId': userId}, function (err, user) {
+        if (err)
+          return done(err);
+        if (!user) {
+          return done(null, false);
+        }
+        if (!isValidPassword(user, password)) {
+          return done(null, false);
+        }
+        return done(null, user);
+      });
+    }
+    )
+);
+
+var isValidPassword = function (user, password) {
+  return bcrypt.compareSync(password, user.password);
+};
+
 var index = require('./routes/index');
 
-app.use('/', index);
+app.use('/', index(passport));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
