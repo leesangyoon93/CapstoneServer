@@ -184,7 +184,14 @@ module.exports = function (passport) {
         WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             console.log(washerRoom._host.userId);
             if (err) return res.json({'result': 'fail'});
-            if (washerRoom) return res.json({'result': 'success', 'userId': washerRoom._host.userId});
+            if (washerRoom) {
+                var id = new ObjectId(washerRoom._host);
+                User.findById(id, function(err, user) {
+                    if(err) return res.json({'result': 'fail'});
+                    if(user) return res.json({'result': 'success', 'userId': user.userId});
+                    else return res.json({'result': 'fail'});
+                })
+            }
             else return res.json({'result': 'fail'});
         });
     });
