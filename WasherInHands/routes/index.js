@@ -178,12 +178,12 @@ module.exports = function (passport) {
             if (washerRoom) return res.json(washerRoom);
             else return res.json({'result': 'fail'});
         });
-    })
+    });
     // inner group
     router.get('/getHost', function (req, res) {
         WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) return res.json({'result': 'fail'});
-            if (washerRoom) return res.json({'userId': washerRoom._host.userId});
+            if (washerRoom) return res.json({'result': 'success', 'userId': washerRoom._host.userId});
             else return res.json({'result': 'fail'});
         });
     });
