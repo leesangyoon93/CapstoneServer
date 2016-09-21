@@ -172,12 +172,18 @@ module.exports = function (passport) {
         });
     });
 
-
-    // inner group
-    router.post('/showGroup', function (req, res) {
-        WasherRoom.findOne({'roomName': req.body.roomName}, function (err, washerRoom) {
+    router.get('/getGroup', function(req, res) {
+        WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) return res.json({'result': 'fail'});
             if (washerRoom) return res.json(washerRoom);
+            else return res.json({'result': 'fail'});
+        });
+    })
+    // inner group
+    router.get('/getHost', function (req, res) {
+        WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
+            if (err) return res.json({'result': 'fail'});
+            if (washerRoom) return res.json({'userId': washerRoom._host.userId});
             else return res.json({'result': 'fail'});
         });
     });
