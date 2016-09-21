@@ -131,6 +131,19 @@ module.exports = function (passport) {
         });
     });
 
+    router.get('/searchGroup', function(req, res) {
+        var search = req.query.searchName.replace(/\s/gi, '');
+        console.log(search);
+
+        WasherRoom.find({'roomName': {"$regex": search}}, function(err, washerRooms) {
+            if(err) return res.json({'result': 'fail'});
+            if(washerRooms) {
+                console.log(washerRooms);
+                return res.json(washerRooms);
+            }
+        })
+    });
+
     router.get('/showJoinedGroup', function (req, res) {
         var groupArray = [];
         var count = 0;
