@@ -66,6 +66,18 @@ module.exports = function (passport) {
         });
     });
 
+    router.post('/editPassword', function(req, res) {
+        User.findOne({'userId': req.body.userId}, function(err, user) {
+            if(err) return res.json({'result': 'fail'});
+            if(user) {
+                user.password = req.body.password;
+                user.save();
+                return res.json({'result': 'success'});
+            }
+            else return res.json({'resut': 'fail'});
+        })
+    });
+
     router.post('/createGroup', function (req, res) {
         WasherRoom.findOne({'roomName': req.body.roomName}, function (err, washerRoom) {
             if (err) return res.json({'result': 'fail'});
