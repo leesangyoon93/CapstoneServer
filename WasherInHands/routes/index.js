@@ -116,6 +116,10 @@ module.exports = function (passport) {
                 User.findOne({'userId': req.body.userId}, function (err, user) {
                     if (err) return res.json({'result': 'fail'});
                     if (user) {
+                        for(var i=0; i<user.washerRooms.length; i++) {
+                            if(user.washerRooms[i].str == washerRoom._id.str)
+                                return res.json({'result': 'overlap'});
+                        }
                         washerRoom.members.push(user);
                         user.washerRooms.push(washerRoom);
                         washerRoom.save();
