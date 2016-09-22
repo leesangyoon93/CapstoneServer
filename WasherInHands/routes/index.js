@@ -305,7 +305,7 @@ module.exports = function (passport) {
     });
 
     router.post('/saveGroup', function (req, res) {
-
+        console.log(req.body);
     });
 
     return router;
