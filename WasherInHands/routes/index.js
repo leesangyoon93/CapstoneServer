@@ -12,22 +12,6 @@ module.exports = function (passport) {
         res.render('index');
     });
 
-    // var getUser = function (userId) {
-    //     User.findOne({'userId': userId}, function (err, user) {
-    //         if (err) throw err;
-    //         if (user) return user;
-    //         else return null;
-    //     })
-    // };
-    //
-    // var getWasherRoom = function (roomName) {
-    //     WasherRoom.findOne({'roomName': roomName}, function (err, washerRoom) {
-    //         if (err) throw err;
-    //         if (washerRoom) return washerRoom;
-    //         else return null;
-    //     })
-    // };
-
     router.get('/getUser', function (req, res) {
         User.findOne({'userId': req.query.userId}, function (err, user) {
             if (err) throw err;
@@ -256,7 +240,7 @@ module.exports = function (passport) {
         var memberArray = [];
         var count = 0;
 
-        WasherRoom.findOne({'roomName': roomName}, function (err, washerRoom) {
+        WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) return res.json({'result': 'fail'});
             if (washerRoom) {
                 for (var i = 0; i < washerRoom.members.length; i++) {
@@ -289,7 +273,6 @@ module.exports = function (passport) {
                 User.find(function(err, users) {
                     if(err) return res.json({'result': 'fail'});
                     if(users) {
-                        console.log(users);
                         for(var i=0; i<users.length; i++) {
                             for(var j=0; j<users[i].washerRooms.length; j++) {
                                 if(users[i].washerRooms[j].equals(washerRoom._id)) {
