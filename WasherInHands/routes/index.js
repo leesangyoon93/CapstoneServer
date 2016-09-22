@@ -283,7 +283,7 @@ module.exports = function (passport) {
     });
 
     router.get('/deleteGroup', function (req, res) {
-        WasherRoom.findOne({'roomName': roomName}, function (err, washerRoom) {
+        WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) throw err;
             if (washerRoom) {
                 washerRoom.remove();
