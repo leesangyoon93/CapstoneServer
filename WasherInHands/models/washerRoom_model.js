@@ -8,8 +8,7 @@ var Schema = mongoose.Schema;
 
 var WasherRoomSchema = new Schema({
     host: {
-        type: String,
-        unique: true
+        type: String
     },
     roomName: {
         type: String,

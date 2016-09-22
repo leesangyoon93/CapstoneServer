@@ -90,7 +90,7 @@ module.exports = function (passport) {
                     if (err) throw err;
                     if (user) {
                         var newWasherRoom = new WasherRoom();
-                        newWasherRoom.host = req.body.userId;
+                        newWasherRoom.host = user.userId;
                         newWasherRoom.roomName = req.body.roomName;
                         newWasherRoom.address = req.body.address;
                         newWasherRoom.members.push(user);
