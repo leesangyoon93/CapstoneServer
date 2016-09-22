@@ -119,8 +119,11 @@ module.exports = function (passport) {
                     if (err) return res.json({'result': 'fail'});
                     if (user) {
                         for(var i=0; i<user.washerRooms.length; i++) {
-                            if(user.washerRooms[i].str == washerRoom._id.str)
+                            console.log(user.washerRooms[i]);
+                            console.log(washerRoom._id);
+                            if(user.washerRooms[i].str == washerRoom._id.str) {
                                 return res.json({'result': 'overlap'});
+                            }
                         }
                         washerRoom.members.push(user);
                         if(user.washerRooms.length == 0 && user.mainRoomName == "")
