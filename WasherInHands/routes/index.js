@@ -306,6 +306,8 @@ module.exports = function (passport) {
 
     router.post('/saveGroup', function (req, res) {
         console.log(req.body);
+        var machines = JSON.parse(req.body.machine);
+        console.log(machines);
         return res.json({'result': 'success'});
     });
 
