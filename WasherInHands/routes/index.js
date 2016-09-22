@@ -92,7 +92,7 @@ module.exports = function (passport) {
                     if (err) throw err;
                     if (user) {
                         var newWasherRoom = new WasherRoom();
-                        newWasherRoom._host = user;
+                        newWasherRoom.host = req.body.userId;
                         newWasherRoom.roomName = req.body.roomName;
                         newWasherRoom.address = req.body.address;
                         newWasherRoom.members.push(user);
@@ -181,20 +181,22 @@ module.exports = function (passport) {
     });
     // inner group
     router.get('/getHost', function (req, res) {
+        console.log(req.query.userId);
         WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) return res.json({'result': 'fail'});
             if (washerRoom) {
-                var id = new ObjectId(washerRoom._host);
-                User.findById(id, function(err, user) {
+                User.findOne({'userId': req.query.userId}, function(err, user) {
                     console.log(user.userId);
                     if(err) return res.json({'result': 'fail'});
                     if(user) {
-                        if(req.query.userId == user.userId) {
+                        if(washerRoom.host == user.userId) {
                             console.log("true");
                             return res.json({'result': 'success'});
                         }
-                        else
+                        else {
                             console.log("false");
+                            return res.json({'result' : 'fail'});
+                        }
                     }
                     else return res.json({'result': 'fail'});
                 })

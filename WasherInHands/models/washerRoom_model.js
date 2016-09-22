@@ -7,7 +7,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var WasherRoomSchema = new Schema({
-    _host: {type: Schema.Types.ObjectId, ref: 'User'},
+    host: {
+        type: String,
+        unique: true
+    },
     roomName: {
         type: String,
         unique: true
