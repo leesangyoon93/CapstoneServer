@@ -289,7 +289,8 @@ module.exports = function (passport) {
                 User.find(function(err, users) {
                     if(err) return res.json({'result': 'fail'});
                     if(users) {
-                        for(var i in users) {
+                        console.log(users);
+                        for(var i=0; i<users.length; i++) {
                             for(var j=0; j<users[i].washerRooms.length; j++) {
                                 if(users[i].washerRooms[j].equals(washerRoom._id)) {
                                     if(users[i].mainRoomName == washerRoom.roomName)
