@@ -205,6 +205,36 @@ module.exports = function (passport) {
         });
     });
 
+    router.get('/exitGroup', function(req, res) {
+       WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
+           if(err) return res.json({'result' : 'fail'});
+           if(washerRoom) {
+               console.log(washerRoom.ObjectId);
+               User.findOne({'userId': req.query.userId}, function(err, user) {
+                   if(err) return res.json({'result': 'fail'});
+                   if(user) {
+                       console.log(user.ObjectId);
+                       for(var i=0; i<washerRoom.members.length; i++) {
+                           if(washerRoom.members[i] == user.ObjectId) {
+                               washerRoom.members.splice(i, 1);
+                               break;
+                           }
+                       }
+                       for(var j=0; j<user.washerRooms.length; j++) {
+                           if(user.washerRooms[j] == washerRoom.ObjectId) {
+                               user.washerRooms.splice(j, 1);
+                               break;
+                           }
+                       }
+                       return res.json({'result': 'success'});
+                   }
+                   else return res.json({'result': 'fail'});
+               })
+           }
+           else return res.json({'result': 'fail'});
+       })
+    });
+
     router.get('/showAllGroup', function (req, res) {
         WasherRoom.find().exec(function (err, washerRooms) {
             return res.json(washerRooms);
