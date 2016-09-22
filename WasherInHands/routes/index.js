@@ -209,19 +209,19 @@ module.exports = function (passport) {
        WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
            if(err) return res.json({'result' : 'fail'});
            if(washerRoom) {
-               console.log(washerRoom.ObjectId);
+               console.log(washerRoom._id);
                User.findOne({'userId': req.query.userId}, function(err, user) {
                    if(err) return res.json({'result': 'fail'});
                    if(user) {
-                       console.log(user.ObjectId);
+                       console.log(user._id);
                        for(var i=0; i<washerRoom.members.length; i++) {
-                           if(washerRoom.members[i] == user.ObjectId) {
+                           if(washerRoom.members[i] == user._id) {
                                washerRoom.members.splice(i, 1);
                                break;
                            }
                        }
                        for(var j=0; j<user.washerRooms.length; j++) {
-                           if(user.washerRooms[j] == washerRoom.ObjectId) {
+                           if(user.washerRooms[j] == washerRoom._id) {
                                user.washerRooms.splice(j, 1);
                                break;
                            }
