@@ -188,7 +188,14 @@ module.exports = function (passport) {
                 User.findById(id, function(err, user) {
                     console.log(user.userId);
                     if(err) return res.json({'result': 'fail'});
-                    if(user) return res.json({'result': 'success', 'userId': user.userId});
+                    if(user) {
+                        if(req.query.userId == user.userId) {
+                            console.log("true");
+                            return res.json({'result': 'success'});
+                        }
+                        else
+                            console.log("false");
+                    }
                     else return res.json({'result': 'fail'});
                 })
             }
