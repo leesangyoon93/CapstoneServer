@@ -286,6 +286,23 @@ module.exports = function (passport) {
         WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) throw err;
             if (washerRoom) {
+                var id = new ObjectId(washerRoom._id);
+                User.find({'washerRooms': {$eleMatch: id}}, function(err, users) {
+                    if(err) return res.json({'result': 'fail'});
+                    if(users) {
+                        for(var i in users) {
+                            for(var j=0; j<users[i].washerRooms.length; j++) {
+                                if(users[i].washerRooms[j].equals(washerRoom._id)) {
+                                    if(users[i].mainRoomName == washerRoom.roomName)
+                                        users[i].mainRoomName = "";
+                                    users[i].washerRooms.splice(j, 1);
+                                    user[i].save();
+                                }
+                            }
+                        }
+                        return res.json({'result': 'success'});
+                    }
+                });
                 washerRoom.remove();
                 return res.json({'result': 'success'});
             }

@@ -22,4 +22,9 @@ var WasherRoomSchema = new Schema({
     washers: [{type: Schema.Types.ObjectId, ref: 'Washer'}]
 });
 
+// WasherRoomSchema.pre('remove', function(next) {
+//     // Remove all the assignment docs that reference the removed person.
+//     this.model('User').remove({ person: this._id }, next);
+// });
+
 mongoose.model('WasherRoom', WasherRoomSchema);
