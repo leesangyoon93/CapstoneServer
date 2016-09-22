@@ -217,7 +217,8 @@ module.exports = function (passport) {
                        for(var i=0; i<washerRoom.members.length; i++) {
                            console.log(i + "i");
                            console.log(washerRoom.members[i]);
-                           if(washerRoom.members[i] == new ObjectId(user._id)) {
+                           console.log(user._id)
+                           if(washerRoom.members[i] == user._id) {
                                console.log(i + "멤버삭제");
                                washerRoom.members.splice(i, 1);
                                washerRoom.save();
@@ -227,13 +228,15 @@ module.exports = function (passport) {
                        for(var j=0; j<user.washerRooms.length; j++) {
                            console.log(j + "j");
                            console.log(user.washerRooms[j]);
-                           if(user.washerRooms[j] == new ObjectId(washerRoom._id)) {
+                           console.log(washerRoom._id);
+                           if(user.washerRooms[j] == washerRoom._id) {
                                console.log(j + "세탁방 삭제");
                                user.washerRooms.splice(j, 1);
                                user.save();
                                return res.json({'result': 'success'});
                            }
                        }
+                       return res.json({'result': 'fail'});
                    }
                    else return res.json({'result': 'fail'});
                })
