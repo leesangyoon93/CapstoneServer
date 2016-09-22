@@ -4,6 +4,8 @@ var bcrypt = require("bcrypt-nodejs");
 var router = express.Router();
 var User = mongoose.model('User');
 var WasherRoom = mongoose.model('WasherRoom');
+var Washer = mongoose.model('Washer');
+var Module = mongoose.model('Module');
 var ObjectId = require('mongodb').ObjectId;
 
 /* GET home page. */
@@ -262,10 +264,6 @@ module.exports = function (passport) {
         })
     });
 
-    router.post('/saveGroup', function (req, res) {
-
-    });
-
     router.get('/deleteGroup', function (req, res) {
         WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) throw err;
@@ -296,6 +294,18 @@ module.exports = function (passport) {
     router.get('/logout', function (req, res) {
         req.logout();
         return res.json({'result': 'success'});
+    });
+
+    router.post('/findModule', function(req, res) {
+        Module.findOne({'moduleId': req.body.moduleId}, function(err, module) {
+            if(err) return res.json({'result': 'fail'});
+            if(module) return res.json({'result': 'success'});
+            else return res.json({'result': 'fail'});
+        })
+    });
+
+    router.post('/saveGroup', function (req, res) {
+
     });
 
     return router;

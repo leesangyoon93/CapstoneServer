@@ -29,6 +29,8 @@ mongoose.connect('mongodb://localhost/washerInHands', function(err) {
 
 require('./models/user_model');
 require('./models/washerRoom_model');
+require('./models/washer_model');
+require('./models/module_model');
 var User = mongoose.model('User');
 
 // view engine setup
