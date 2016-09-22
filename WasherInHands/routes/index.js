@@ -215,13 +215,13 @@ module.exports = function (passport) {
                    if(user) {
                        console.log(user._id);
                        for(var i=0; i<washerRoom.members.length; i++) {
-                           if(washerRoom.members[i] == user._id) {
+                           if(washerRoom.members[i] == new ObjectId(user._id)) {
                                washerRoom.members.splice(i, 1);
                                break;
                            }
                        }
                        for(var j=0; j<user.washerRooms.length; j++) {
-                           if(user.washerRooms[j] == washerRoom._id) {
+                           if(user.washerRooms[j] == new ObjectId(washerRoom._id)) {
                                user.washerRooms.splice(j, 1);
                                break;
                            }
