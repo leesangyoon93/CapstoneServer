@@ -30,7 +30,6 @@ module.exports = function (passport) {
 
     router.get('/getUser', function (req, res) {
         User.findOne({'userId': req.query.userId}, function (err, user) {
-            console.log(user);
             if (err) throw err;
             if (user) return res.json(user);
             else return res.json({'result': 'fail'});
@@ -88,7 +87,6 @@ module.exports = function (passport) {
             if (washerRoom) return res.json({'result': 'overlap'});
             else {
                 User.findOne({'userId': req.body.userId}, function (err, user) {
-                    console.log(user);
                     if (err) throw err;
                     if (user) {
                         var newWasherRoom = new WasherRoom();
@@ -133,14 +131,11 @@ module.exports = function (passport) {
 
     router.get('/searchGroup', function(req, res) {
         var search = req.query.searchName;
-        console.log(search);
         search = search.replace(/\s/gi, '');
         WasherRoom.find({'roomName': {"$regex": search}}, function(err, washerRooms) {
             if(err) return res.json({'result': 'fail'});
-            if(washerRooms) {
-                console.log(washerRooms);
+            if(washerRooms)
                 return res.json(washerRooms);
-            }
         })
     });
 
@@ -161,10 +156,8 @@ module.exports = function (passport) {
                         }
                         else count++;
 
-                        if (count == user.washerRooms.length) {
-                            console.log(groupArray);
+                        if (count == user.washerRooms.length)
                             return res.json(groupArray);
-                        }
                     })
                 }
             }
@@ -181,22 +174,16 @@ module.exports = function (passport) {
     });
     // inner group
     router.get('/getHost', function (req, res) {
-        console.log(req.query.userId);
         WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) return res.json({'result': 'fail'});
             if (washerRoom) {
                 User.findOne({'userId': req.query.userId}, function(err, user) {
-                    console.log(user.userId);
                     if(err) return res.json({'result': 'fail'});
                     if(user) {
-                        if(washerRoom.host == user.userId) {
-                            console.log("true");
+                        if(washerRoom.host == user.userId)
                             return res.json({'result': 'success'});
-                        }
-                        else {
-                            console.log("false");
+                        else
                             return res.json({'result' : 'fail'});
-                        }
                     }
                     else return res.json({'result': 'fail'});
                 })
@@ -209,34 +196,24 @@ module.exports = function (passport) {
        WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
            if(err) return res.json({'result' : 'fail'});
            if(washerRoom) {
-               console.log(washerRoom._id);
                User.findOne({'userId': req.query.userId}, function(err, user) {
                    if(err) return res.json({'result': 'fail'});
                    if(user) {
-                       console.log(user._id);
                        for(var i=0; i<washerRoom.members.length; i++) {
-                           console.log(i + "i");
-                           console.log(washerRoom.members[i]);
-                           console.log(user._id)
                            if(washerRoom.members[i].str == user._id.str) {
-                               console.log(i + "멤버삭제");
                                washerRoom.members.splice(i, 1);
                                washerRoom.save();
                                break;
                            }
                        }
                        for(var j=0; j<user.washerRooms.length; j++) {
-                           console.log(j + "j");
-                           console.log(user.washerRooms[j]);
-                           console.log(washerRoom._id);
                            if(user.washerRooms[j].str == washerRoom._id.str) {
-                               console.log(j + "세탁방 삭제");
                                user.washerRooms.splice(j, 1);
                                user.save();
                                return res.json({'result': 'success'});
                            }
                        }
-                       return res.json({'result': 'fail'});
+                       return res.json({'result': 'success'});
                    }
                    else return res.json({'result': 'fail'});
                })
