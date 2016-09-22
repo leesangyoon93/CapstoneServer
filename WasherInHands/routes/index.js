@@ -94,10 +94,12 @@ module.exports = function (passport) {
                         newWasherRoom.roomName = req.body.roomName;
                         newWasherRoom.address = req.body.address;
                         newWasherRoom.members.push(user);
+                        if(user.washerRooms.length == 0 && user.mainRoomName == "")
+                            user.mainRoomName = newWasherRoom.roomName;
+                        user.washerRooms.push(newWasherRoom);
                         newWasherRoom.save(function (err) {
                             if (err) return res.json({'result': 'fail'});
                         });
-                        user.washerRooms.push(newWasherRoom);
                         user.save(function (err) {
                             if (err) return res.json({'result': 'fail'});
                         });
