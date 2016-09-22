@@ -296,7 +296,7 @@ module.exports = function (passport) {
                                     if(users[i].mainRoomName == washerRoom.roomName)
                                         users[i].mainRoomName = "";
                                     users[i].washerRooms.splice(j, 1);
-                                    user[i].save();
+                                    users[i].save();
                                 }
                             }
                         }
