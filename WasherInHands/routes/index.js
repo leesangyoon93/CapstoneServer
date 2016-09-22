@@ -220,6 +220,9 @@ module.exports = function (passport) {
                User.findOne({'userId': req.query.userId}, function(err, user) {
                    if(err) return res.json({'result': 'fail'});
                    if(user) {
+                       if(user.mainRoomName == req.query.roomName) {
+                           user.mainRoomName = ""
+                       }
                        for(var i=0; i<washerRoom.members.length; i++) {
                            if(washerRoom.members[i].equals(user._id)) {
                                washerRoom.members.splice(i, 1);
