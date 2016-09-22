@@ -27,6 +27,10 @@ var UserSchema = new Schema({
         type: Date,
         default: Date.now()
     },
+    mainRoomName: {
+        type: String,
+        default: ""
+    },
     washerRooms: [{type: Schema.Types.ObjectId, ref: 'WasherRoom'}]
 });
 

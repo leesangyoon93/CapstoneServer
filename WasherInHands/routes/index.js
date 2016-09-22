@@ -196,6 +196,18 @@ module.exports = function (passport) {
         });
     });
 
+    router.get('/setMainRoom', function(req, res) {
+       User.findOne({'userId': req.query.userId}, function(err, user) {
+           if(err) return res.json({'result': 'fail'});
+           if(user) {
+               user.mainRoomName = req.query.mainRoomName;
+               user.save();
+               return res.json({'result': 'success'});
+           }
+           else return res.json({'result': 'fail'});
+       }) 
+    });
+
     router.get('/exitGroup', function(req, res) {
        WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
            if(err) return res.json({'result' : 'fail'});
