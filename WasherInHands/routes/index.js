@@ -122,6 +122,8 @@ module.exports = function (passport) {
                         }
                         washerRoom.members.push(user);
                         user.washerRooms.push(washerRoom);
+                        if(user.washerRooms.length == 0 &&user.mainRoomName == "")
+                            user.mainRoomName = washerRoom.roomName;
                         washerRoom.save();
                         user.save();
                         return res.json(washerRoom);
@@ -205,7 +207,7 @@ module.exports = function (passport) {
                return res.json({'result': 'success'});
            }
            else return res.json({'result': 'fail'});
-       }) 
+       })
     });
 
     router.get('/exitGroup', function(req, res) {
