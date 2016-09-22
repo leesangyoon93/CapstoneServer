@@ -119,9 +119,7 @@ module.exports = function (passport) {
                     if (err) return res.json({'result': 'fail'});
                     if (user) {
                         for(var i=0; i<user.washerRooms.length; i++) {
-                            console.log(user.washerRooms[i].str);
-                            console.log(washerRoom._id.str);
-                            if(user.washerRooms[i] == washerRoom._id) {
+                            if(user.washerRooms[i].equals(washerRoom._id)) {
                                 return res.json({'result': 'overlap'});
                             }
                         }
@@ -223,14 +221,14 @@ module.exports = function (passport) {
                    if(err) return res.json({'result': 'fail'});
                    if(user) {
                        for(var i=0; i<washerRoom.members.length; i++) {
-                           if(washerRoom.members[i].str == user._id.str) {
+                           if(washerRoom.members[i].equals(user._id)) {
                                washerRoom.members.splice(i, 1);
                                washerRoom.save();
                                break;
                            }
                        }
                        for(var j=0; j<user.washerRooms.length; j++) {
-                           if(user.washerRooms[j].str == washerRoom._id.str) {
+                           if(user.washerRooms[j].equals(washerRoom._id)) {
                                user.washerRooms.splice(j, 1);
                                user.save();
                                return res.json({'result': 'success'});
