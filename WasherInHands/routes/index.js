@@ -286,8 +286,7 @@ module.exports = function (passport) {
         WasherRoom.findOne({'roomName': req.query.roomName}, function (err, washerRoom) {
             if (err) throw err;
             if (washerRoom) {
-                var id = new ObjectId(washerRoom._id);
-                User.find({'washerRooms': {$eleMatch: id}}, function(err, users) {
+                User.find(function(err, users) {
                     if(err) return res.json({'result': 'fail'});
                     if(users) {
                         for(var i in users) {
