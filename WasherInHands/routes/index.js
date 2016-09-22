@@ -216,13 +216,17 @@ module.exports = function (passport) {
                        console.log(user._id);
                        for(var i=0; i<washerRoom.members.length; i++) {
                            if(washerRoom.members[i] == new ObjectId(user._id)) {
+                               console.log(i + "멤버삭제");
                                washerRoom.members.splice(i, 1);
+                               washerRoom.save();
                                break;
                            }
                        }
                        for(var j=0; j<user.washerRooms.length; j++) {
                            if(user.washerRooms[j] == new ObjectId(washerRoom._id)) {
+                               console.log(j + "세탁방 삭제");
                                user.washerRooms.splice(j, 1);
+                               user.save();
                                break;
                            }
                        }
