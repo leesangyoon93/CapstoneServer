@@ -121,9 +121,9 @@ module.exports = function (passport) {
                                 return res.json({'result': 'overlap'});
                         }
                         washerRoom.members.push(user);
-                        user.washerRooms.push(washerRoom);
-                        if(user.washerRooms.length == 0 &&user.mainRoomName == "")
+                        if(user.washerRooms.length == 0 && user.mainRoomName == "")
                             user.mainRoomName = washerRoom.roomName;
+                        user.washerRooms.push(washerRoom);
                         washerRoom.save();
                         user.save();
                         return res.json(washerRoom);
