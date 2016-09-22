@@ -218,7 +218,7 @@ module.exports = function (passport) {
                            console.log(i + "i");
                            console.log(washerRoom.members[i]);
                            console.log(user._id)
-                           if(washerRoom.members[i] == user._id) {
+                           if(washerRoom.members[i].str == user._id.str) {
                                console.log(i + "멤버삭제");
                                washerRoom.members.splice(i, 1);
                                washerRoom.save();
@@ -229,7 +229,7 @@ module.exports = function (passport) {
                            console.log(j + "j");
                            console.log(user.washerRooms[j]);
                            console.log(washerRoom._id);
-                           if(user.washerRooms[j] == washerRoom._id) {
+                           if(user.washerRooms[j].str == washerRoom._id.str) {
                                console.log(j + "세탁방 삭제");
                                user.washerRooms.splice(j, 1);
                                user.save();
