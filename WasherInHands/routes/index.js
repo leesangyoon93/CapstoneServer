@@ -215,6 +215,8 @@ module.exports = function (passport) {
                    if(user) {
                        console.log(user._id);
                        for(var i=0; i<washerRoom.members.length; i++) {
+                           console.log(i + "i");
+                           console.log(washerRoom.members[i]);
                            if(washerRoom.members[i] == new ObjectId(user._id)) {
                                console.log(i + "멤버삭제");
                                washerRoom.members.splice(i, 1);
@@ -223,14 +225,15 @@ module.exports = function (passport) {
                            }
                        }
                        for(var j=0; j<user.washerRooms.length; j++) {
+                           console.log(j + "j");
+                           console.log(user.washerRooms[j]);
                            if(user.washerRooms[j] == new ObjectId(washerRoom._id)) {
                                console.log(j + "세탁방 삭제");
                                user.washerRooms.splice(j, 1);
                                user.save();
-                               break;
+                               return res.json({'result': 'success'});
                            }
                        }
-                       return res.json({'result': 'success'});
                    }
                    else return res.json({'result': 'fail'});
                })
