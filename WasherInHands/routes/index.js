@@ -300,11 +300,11 @@ module.exports = function (passport) {
                                 }
                             }
                         }
+                        washerRoom.remove();
                         return res.json({'result': 'success'});
                     }
+                    else return res.json({'result' : 'fail'});
                 });
-                washerRoom.remove();
-                return res.json({'result': 'success'});
             }
             else return res.json({'result': 'fail'});
         });
