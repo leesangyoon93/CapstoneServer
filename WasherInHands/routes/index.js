@@ -121,7 +121,7 @@ module.exports = function (passport) {
                         for(var i=0; i<user.washerRooms.length; i++) {
                             console.log(user.washerRooms[i].str);
                             console.log(washerRoom._id.str);
-                            if(user.washerRooms[i].str == washerRoom._id.str) {
+                            if(user.washerRooms[i] == washerRoom._id) {
                                 return res.json({'result': 'overlap'});
                             }
                         }
