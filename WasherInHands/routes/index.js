@@ -335,5 +335,20 @@ module.exports = function (passport) {
         })
     });
 
+    router.get('/getWasher', function(req, res) {
+        WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
+            if(err) return res.json({'result': 'fail'});
+            if(washerRoom) {
+                var id = washerRoom._id;
+                Washer.find({'washerRoom': new ObjectId(id)}, function(err, washers) {
+                    if(err) return res.json({'result': 'fail'});
+                    if(washers) return res.json(washers);
+                    else return res.json({'result': 'fail'});
+                })
+            }
+            else return res.json({'result': 'fail'})
+        })
+    });
+
     return router;
 };
