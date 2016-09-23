@@ -322,28 +322,14 @@ module.exports = function (passport) {
                             console.log(washers[i]);
                             washers[i].remove();
                         }
-                        for(var j in machines) {
+                        for(var j=0; j<machines.length; j++) {
                             var washer = new Washer();
                             washer.washerRoom = washerRoom;
                             washer.x = machines[j].x;
                             washer.y = machines[j].y;
                             washer.module = machines[j].module;
                             washer.save();
-                            count++;
-
-                            if(count == machines.length)
-                                return res.json({'result': 'success'});
-                        }
-                    }
-                    else {
-                        console.log("세탁기 없음")
-                        for(var j in machines) {
-                            var washer = new Washer();
-                            washer.washerRoom = washerRoom;
-                            washer.x = machines[j].x;
-                            washer.y = machines[j].y;
-                            washer.module = machines[j].module;
-                            washer.save();
+                            console.log(washer);
                             count++;
 
                             if(count == machines.length)
