@@ -307,6 +307,8 @@ module.exports = function (passport) {
         var machines = JSON.parse(req.body.machine);
         var count = 0;
 
+        console.log(machines);
+
         WasherRoom.findOne({'roomName': req.body.roomName}, function(err, washerRoom) {
             if(err) return res.json({'result': 'fail'});
             if(washerRoom) {
@@ -314,20 +316,39 @@ module.exports = function (passport) {
                 Washer.find({'washerRoom': id}, function(err, washers) {
                     if(err) return res.json({'result': 'fail'});
                     if(washers) {
-                        for(var i in washers)
+                        console.log('세탁기 찾음');
+                        console.log(washers);
+                        for(var i in washers) {
+                            console.log(washers[i]);
                             washers[i].remove();
-                    }
-                    for(var j in machines) {
-                        var washer = new Washer();
-                        washer.washerRoom = washerRoom;
-                        washer.x = machines[j].x;
-                        washer.y = machines[j].y;
-                        washer.module = machines[j].module;
-                        washer.save();
-                        count++;
+                        }
+                        for(var j in machines) {
+                            var washer = new Washer();
+                            washer.washerRoom = washerRoom;
+                            washer.x = machines[j].x;
+                            washer.y = machines[j].y;
+                            washer.module = machines[j].module;
+                            washer.save();
+                            count++;
 
-                        if(count == machines.length)
-                            return res.json({'result': 'success'});
+                            if(count == machines.length)
+                                return res.json({'result': 'success'});
+                        }
+                    }
+                    else {
+                        console.log("세탁기 없음")
+                        for(var j in machines) {
+                            var washer = new Washer();
+                            washer.washerRoom = washerRoom;
+                            washer.x = machines[j].x;
+                            washer.y = machines[j].y;
+                            washer.module = machines[j].module;
+                            washer.save();
+                            count++;
+
+                            if(count == machines.length)
+                                return res.json({'result': 'success'});
+                        }
                     }
                 });
             }
