@@ -308,6 +308,7 @@ module.exports = function (passport) {
         var count = 0;
 
         console.log(machines);
+        console.log(machines.length);
 
         WasherRoom.findOne({'roomName': req.body.roomName}, function(err, washerRoom) {
             if(err) return res.json({'result': 'fail'});
@@ -316,10 +317,8 @@ module.exports = function (passport) {
                 Washer.find({'washerRoom': id}, function(err, washers) {
                     if(err) return res.json({'result': 'fail'});
                     if(washers) {
-                        console.log('세탁기 찾음');
                         console.log(washers);
-                        for(var i in washers) {
-                            console.log(washers[i]);
+                        for(var i=0; i<washers.length; i++) {
                             washers[i].remove();
                         }
                         for(var j=0; j<machines.length; j++) {
@@ -331,7 +330,7 @@ module.exports = function (passport) {
                             washer.save();
                             console.log(washer);
                             count++;
-
+                            console.log(count);
                             if(count == machines.length)
                                 return res.json({'result': 'success'});
                         }
