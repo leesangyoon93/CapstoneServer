@@ -307,9 +307,6 @@ module.exports = function (passport) {
         var machines = JSON.parse(req.body.machine);
         var count = 0;
 
-        console.log(machines);
-        console.log(machines.length);
-
         WasherRoom.findOne({'roomName': req.body.roomName}, function(err, washerRoom) {
             if(err) return res.json({'result': 'fail'});
             if(washerRoom) {
@@ -317,9 +314,8 @@ module.exports = function (passport) {
                 Washer.find({'washerRoom': id}, function(err, washers) {
                     if(err) return res.json({'result': 'fail'});
                     if(washers) {
-                        for(var i=0; i<washers.length; i++) {
+                        for(var i=0; i<washers.length; i++)
                             washers[i].remove();
-                        }
                         for(var j=0; j<machines.length; j++) {
                             var washer = new Washer();
                             washer.washerRoom = washerRoom;
@@ -345,7 +341,10 @@ module.exports = function (passport) {
                 var id = washerRoom._id;
                 Washer.find({'washerRoom': new ObjectId(id)}, function(err, washers) {
                     if(err) return res.json({'result': 'fail'});
-                    if(washers) return res.json(washers);
+                    if(washers) {
+                        console.log(washers);
+                        return res.json(washers);
+                    }
                     else return res.json({'result': 'fail'});
                 })
             }
