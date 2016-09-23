@@ -317,7 +317,6 @@ module.exports = function (passport) {
                 Washer.find({'washerRoom': id}, function(err, washers) {
                     if(err) return res.json({'result': 'fail'});
                     if(washers) {
-                        console.log(washers);
                         for(var i=0; i<washers.length; i++) {
                             washers[i].remove();
                         }
@@ -328,9 +327,7 @@ module.exports = function (passport) {
                             washer.y = machines[j].y;
                             washer.module = machines[j].module;
                             washer.save();
-                            console.log(washer);
                             count++;
-                            console.log(count);
                             if(count == machines.length)
                                 return res.json({'result': 'success'});
                         }

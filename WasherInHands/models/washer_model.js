@@ -8,10 +8,10 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
 
 var WasherSchema = new Schema({
-    washerRoom: {type: Schema.Types.ObjectId, ref: 'WasherRoom'},
+    washerRoom: {type: Schema.Types.ObjectId, ref: 'WasherRoom', unique: false},
     module: {
         type: String,
-        unique: true
+        unique: false
     },
     runTime: {
         type: Number,
