@@ -14,9 +14,13 @@ var WasherSchema = new Schema({
         unique: true
     },
     runTime: {
-        type: Number
+        type: Number,
+        default: 0
     },
-    isTrouble: Boolean,
+    isTrouble: {
+        type: Boolean,
+        default: false
+    },
     x: Number,
     y: Number
 });

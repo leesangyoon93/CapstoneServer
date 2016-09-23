@@ -129,8 +129,7 @@ module.exports = function (passport) {
         search = search.replace(/\s/gi, '');
         WasherRoom.find({'roomName': {"$regex": search}}, function(err, washerRooms) {
             if(err) return res.json({'result': 'fail'});
-            if(washerRooms)
-                return res.json(washerRooms);
+            if(washerRooms) return res.json(washerRooms);
         })
     });
 
@@ -305,10 +304,35 @@ module.exports = function (passport) {
     });
 
     router.post('/saveGroup', function (req, res) {
-        console.log(req.body);
         var machines = JSON.parse(req.body.machine);
-        console.log(machines);
-        return res.json({'result': 'success'});
+        var count = 0;
+
+        WasherRoom.findOne({'roomName': req.body.roomName}, function(err, washerRoom) {
+            if(err) return res.json({'result': 'fail'});
+            if(washerRoom) {
+                var id = new ObjectId(washerRoom._id);
+                Washer.find({'washerRoom': id}, function(err, washers) {
+                    if(err) return res.json({'result': 'fail'});
+                    if(washers) {
+                        for(var i in washers)
+                            washers[i].remove();
+                    }
+                    for(var j in machines) {
+                        var washer = new Washer();
+                        washer.washerRoom = washerRoom;
+                        washer.x = machines[j].x;
+                        washer.y = machines[j].y;
+                        washer.module = machines[j].module;
+                        washer.save();
+                        count++;
+
+                        if(count == machines.length)
+                            return res.json({'result': 'success'});
+                    }
+                });
+            }
+            else return res.json({'result' : 'fail'});
+        })
     });
 
     return router;
