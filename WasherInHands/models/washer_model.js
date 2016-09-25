@@ -22,7 +22,11 @@ var WasherSchema = new Schema({
         default: false
     },
     x: Number,
-    y: Number
+    y: Number,
+    isWorking: {
+        type: Boolean,
+        default: false
+    }
 });
 
 mongoose.model('Washer', WasherSchema);
