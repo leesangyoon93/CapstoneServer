@@ -18,8 +18,7 @@ var WasherRoomSchema = new Schema({
     address: {
         type: String
     },
-    members: [{type: Schema.Types.ObjectId, ref: 'User'}],
-    washers: [{type: Schema.Types.ObjectId, ref: 'Washer'}]
+    members: [{type: Schema.Types.ObjectId, ref: 'User'}]
 });
 
 // WasherRoomSchema.pre('remove', function(next) {
