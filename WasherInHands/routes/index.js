@@ -6,6 +6,8 @@ var User = mongoose.model('User');
 var WasherRoom = mongoose.model('WasherRoom');
 var Washer = mongoose.model('Washer');
 var Module = mongoose.model('Module');
+var Article = mongoose.model('Article');
+var Comment = mongoose.model('Comment');
 var ObjectId = require('mongodb').ObjectId;
 
 /* GET home page. */
@@ -352,5 +354,80 @@ module.exports = function (passport) {
         })
     });
 
+    router.get('/getArticles', function(req, res) {
+        WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
+            if(err) return res.json({'result': 'fail'});
+            if(washerRoom) {
+                var id = washerRoom._id;
+                Article.find({'washerRoom': new ObjectId(id)}, function(err, articles) {
+                    if(err) return res.json({'result': 'fail'});
+                    if(articles) return res.json(articles);
+                })
+            }
+            else return res.json({'result': 'fail'});
+        })
+    });
+
+    router.get('/showArticle', function(req, res) {
+        Article.findById(req.query.articleId, function(err, article) {
+            if(err) return res.json({'result': 'fail'});
+            if(article) return res.json(article)
+            else return res.json({'result': 'fail'});
+        })
+    });
+
+    router.get('/showComments', function(req, res) {
+        var id = req.query.articleId;
+        Comment.find({'article': new ObjectId(id)}, function(err, comments) {
+            if(err) return res.json({'result': 'fail'});
+            if(comments) return res.json(comments);
+            else return res.json({'result': 'fail'});
+        })
+    });
+    
+    router.get('/saveArticle', function(req, res) {
+        Article.findById(req.query.articleId, function(err, article) {
+            if(err) return res.json({'result': 'fail'});
+            if(article) {
+                article.title = req.query.title;
+                article.content = req.query.content;
+                article.articleDate = Date.now().toString();
+                article.save();
+                return res.json({'result': 'success'});
+            }
+            else {
+                var newArticle = new Article();
+                newArticle.title = req.query.title;
+                article.content = req.query.content;
+                article.author = req.query.userId;
+                WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
+                    if(err) return res.json({'result': 'fail'});
+                    if(washerRoom) {
+                        article.washerRoom = washerRoom;
+                        article.save();
+                        return res.json({'result': 'success'});
+                    }
+                    else return res.json({'result': 'fail'});
+                });
+            }
+        })
+    });
+    
+    router.get('/saveComment', function(req, res) {
+        Article.findById(req.query.articleId, function(err, article) {
+            if(err) return res.json({'result': 'fail'});
+            if(article) {
+                var comment = new Comment();
+                comment.article = article;
+                comment.author = req.query.userId;
+                comment.content = req.query.content;
+                comment.save();
+                return res.json({'result': 'success'});
+            }
+            else return res.json({'result': 'fail'});
+        })
+    });
+
     return router;
 };
+// delete article

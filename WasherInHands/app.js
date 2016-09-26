@@ -31,6 +31,8 @@ require('./models/user_model');
 require('./models/washerRoom_model');
 require('./models/washer_model');
 require('./models/module_model');
+require('./models/article_model');
+require('./models/comment_model');
 var User = mongoose.model('User');
 
 // view engine setup
