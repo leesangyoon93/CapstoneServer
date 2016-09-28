@@ -393,9 +393,9 @@ module.exports = function (passport) {
                 console.log(article);
                 article.title = req.query.title;
                 article.content = req.query.content;
-                article.articleDate = Date.toString();
+                article.articleDate = new Date().toISOString();
                 article.save();
-                return res.json({'result': 'success'}, {'articleId': article._id});
+                return res.json({'result': 'success', 'articleId': article._id});
             }
             else {
                 var newArticle = new Article();
@@ -407,7 +407,7 @@ module.exports = function (passport) {
                     if(washerRoom) {
                         newArticle.washerRoom = washerRoom;
                         newArticle.save();
-                        return res.json({'result': 'success'}, {'articleId': newArticle._id});
+                        return res.json({'result': 'success', 'articleId': newArticle._id});
                     }
                     else
                         return res.json({'result': 'fail'});
