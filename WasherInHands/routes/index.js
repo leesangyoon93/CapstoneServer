@@ -394,7 +394,8 @@ module.exports = function (passport) {
                 console.log(article);
                 article.title = req.query.title;
                 article.content = req.query.content;
-                article.articleDate = new Date().toISOString();
+                var date = new Date().toISOString();
+                article.articleDate = date.slice(10, date.length);
                 article.save();
                 return res.json({'result': 'success', 'articleId': article._id});
             }
@@ -403,6 +404,8 @@ module.exports = function (passport) {
                 newArticle.title = req.query.title;
                 newArticle.content = req.query.content;
                 newArticle.author = req.query.userId;
+                var date = new Date().toISOString();
+                newArticle.articleDate = date.slice(10, date.length);
                 WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
                     if(err) return res.json({'result': 'fail'});
                     if(washerRoom) {

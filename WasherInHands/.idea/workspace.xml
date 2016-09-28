@@ -21,11 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="637">
-              <caret line="417" column="7" selection-start-line="417" selection-start-column="7" selection-end-line="417" selection-end-column="7" />
+            <state relative-caret-position="337">
+              <caret line="405" column="53" selection-start-line="405" selection-start-column="53" selection-end-line="405" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -87,18 +87,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="article_model.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/article_model.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
-              <folding>
-                <element signature="e#0#45#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="comment_model.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/comment_model.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -133,6 +121,18 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="article_model.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/models/article_model.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#45#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -163,8 +163,8 @@
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/models/comment_model.js" />
         <option value="$PROJECT_DIR$/views/index.jade" />
-        <option value="$PROJECT_DIR$/models/article_model.js" />
         <option value="$PROJECT_DIR$/routes/index.js" />
+        <option value="$PROJECT_DIR$/models/article_model.js" />
       </list>
     </option>
   </component>
@@ -447,12 +447,12 @@
       <workItem from="1474285639515" duration="88023000" />
       <workItem from="1474890076524" duration="121000" />
       <workItem from="1474897946989" duration="3348000" />
-      <workItem from="1475068320414" duration="2452000" />
+      <workItem from="1475068320414" duration="3003000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="134038000" />
+    <option name="totallyTimeSpent" value="134589000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
@@ -876,21 +876,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/article_model.js">
+    <entry file="file://$PROJECT_DIR$/routes/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#45#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="337">
+          <caret line="405" column="53" selection-start-line="405" selection-start-column="53" selection-end-line="405" selection-end-column="53" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/index.js">
+    <entry file="file://$PROJECT_DIR$/models/article_model.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="637">
-          <caret line="417" column="7" selection-start-line="417" selection-start-column="7" selection-end-line="417" selection-end-column="7" />
-          <folding />
+        <state relative-caret-position="425">
+          <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#45#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
