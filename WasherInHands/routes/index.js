@@ -386,6 +386,7 @@ module.exports = function (passport) {
     });
     
     router.get('/saveArticle', function(req, res) {
+        console.log(req.query.articleId);
         var id = req.query.articleId;
         Article.findById(new ObjectId(id), function(err, article) {
             if(err) return res.json({'result': 'fail'});
