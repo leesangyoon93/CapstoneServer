@@ -5,7 +5,6 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
 
 var CommentSchema = new Schema({
     article: {type: Schema.Types.ObjectId, ref: 'Article', unique: false},

@@ -5,7 +5,6 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
 
 var ArticleSchema = new Schema({
     washerRoom: {type: Schema.Types.ObjectId, ref: 'WasherRoom', unique: false},

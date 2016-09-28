@@ -371,7 +371,7 @@ module.exports = function (passport) {
     router.get('/showArticle', function(req, res) {
         Article.findById(req.query.articleId, function(err, article) {
             if(err) return res.json({'result': 'fail'});
-            if(article) return res.json(article)
+            if(article) return res.json(article);
             else return res.json({'result': 'fail'});
         })
     });
@@ -389,6 +389,7 @@ module.exports = function (passport) {
         Article.findById(req.query.articleId, function(err, article) {
             if(err) return res.json({'result': 'fail'});
             if(article) {
+                console.log(article);
                 article.title = req.query.title;
                 article.content = req.query.content;
                 article.articleDate = Date.now().toString();
@@ -396,6 +397,7 @@ module.exports = function (passport) {
                 return res.json({'result': 'success'});
             }
             else {
+                console.log("new article");
                 var newArticle = new Article();
                 newArticle.title = req.query.title;
                 article.content = req.query.content;
@@ -403,11 +405,15 @@ module.exports = function (passport) {
                 WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
                     if(err) return res.json({'result': 'fail'});
                     if(washerRoom) {
+                        console.log("방 찾음");
                         article.washerRoom = washerRoom;
                         article.save();
                         return res.json({'result': 'success'});
                     }
-                    else return res.json({'result': 'fail'});
+                    else {
+                        console.log("방없음");
+                        return res.json({'result': 'fail'});
+                    }
                 });
             }
         })
