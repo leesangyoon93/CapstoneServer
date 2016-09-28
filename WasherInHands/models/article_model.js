@@ -18,7 +18,7 @@ var ArticleSchema = new Schema({
     },
     articleDate: {
         type: String,
-        default: Date.now().toString()
+        default: new Date().toISOString()
     },
     content: {
         type: String
