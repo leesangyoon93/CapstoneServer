@@ -369,7 +369,8 @@ module.exports = function (passport) {
     });
 
     router.get('/showArticle', function(req, res) {
-        Article.findById(req.query.articleId, function(err, article) {
+        var id = new ObjectId(req.query.articleId);
+        Article.findById(id, function(err, article) {
             if(err) return res.json({'result': 'fail'});
             if(article) return res.json(article);
             else return res.json({'result': 'fail'});
