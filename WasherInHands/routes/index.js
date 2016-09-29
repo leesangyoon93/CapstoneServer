@@ -386,14 +386,14 @@ module.exports = function (passport) {
         })
     });
     
-    router.get('/saveArticle', function(req, res) {
-        var id = new ObjectId(req.query.articleId);
+    router.post('/saveArticle', function(req, res) {
+        var id = new ObjectId(req.body.articleId);
         Article.findById(id, function(err, article) {
             if(err) return res.json({'result': 'fail'});
             if(article) {
                 console.log(article);
-                article.title = req.query.title;
-                article.content = req.query.content;
+                article.title = req.body.title;
+                article.content = req.body.content;
                 var date = new Date().toISOString();
                 article.articleDate = date.slice(0, 10);
                 article.save();
@@ -401,12 +401,12 @@ module.exports = function (passport) {
             }
             else {
                 var newArticle = new Article();
-                newArticle.title = req.query.title;
-                newArticle.content = req.query.content;
-                newArticle.author = req.query.userId;
+                newArticle.title = req.body.title;
+                newArticle.content = req.body.content;
+                newArticle.author = req.body.userId;
                 var date = new Date().toISOString();
                 newArticle.articleDate = date.slice(0, 10);
-                WasherRoom.findOne({'roomName': req.query.roomName}, function(err, washerRoom) {
+                WasherRoom.findOne({'roomName': req.body.roomName}, function(err, washerRoom) {
                     if(err) return res.json({'result': 'fail'});
                     if(washerRoom) {
                         newArticle.washerRoom = washerRoom;
@@ -420,14 +420,14 @@ module.exports = function (passport) {
         })
     });
     
-    router.get('/saveComment', function(req, res) {
-        Article.findById(req.query.articleId, function(err, article) {
+    router.post('/saveComment', function(req, res) {
+        Article.findById(req.body.articleId, function(err, article) {
             if(err) return res.json({'result': 'fail'});
             if(article) {
                 var comment = new Comment();
                 comment.article = article;
-                comment.author = req.query.userId;
-                comment.content = req.query.content;
+                comment.author = req.body.userId;
+                comment.content = req.body.content;
                 comment.save();
                 return res.json({'result': 'success'});
             }
