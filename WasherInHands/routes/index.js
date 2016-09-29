@@ -381,10 +381,8 @@ module.exports = function (passport) {
         var id = req.query.articleId;
         Comment.find({'article': new ObjectId(id)}, function(err, comments) {
             if(err) return res.json({'result': 'fail'});
-            if(comments) {
-                console.log(comments);
+            if(comments)
                 return res.json(comments);
-            }
             else return res.json({'result': 'fail'});
         })
     });
@@ -432,7 +430,28 @@ module.exports = function (passport) {
                 comment.author = req.body.userId;
                 comment.content = req.body.content;
                 comment.save();
+                article.commentCount += 1;
+                article.save();
                 return res.json({'result': 'success'});
+            }
+            else return res.json({'result': 'fail'});
+        })
+    });
+
+    router.post('/deleteArticle', function(req, res) {
+        var id = new ObjectId(req.body.articleId);
+        Article.findById(id, function(err, article) {
+            if(err) return res.json({'result': 'fail'});
+            if(article) {
+                Comment.find({'article': id}, function(err, comments) {
+                    if(err) return res.json({'result': 'fail'});
+                    if(comments) {
+                        comments.remove();
+                        article.remove();
+                        return res.json({'result': 'success'});
+                    }
+                    else return res.json({'result': 'fail'});
+                })
             }
             else return res.json({'result': 'fail'});
         })

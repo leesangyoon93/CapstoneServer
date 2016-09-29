@@ -25,8 +25,7 @@ var ArticleSchema = new Schema({
     commentCount: {
         type: Number,
         default: 0
-    },
-    comment: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
+    }
 });
 
 mongoose.model('Article', ArticleSchema);
