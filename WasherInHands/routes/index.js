@@ -381,7 +381,10 @@ module.exports = function (passport) {
         var id = req.query.articleId;
         Comment.find({'article': new ObjectId(id)}, function(err, comments) {
             if(err) return res.json({'result': 'fail'});
-            if(comments) return res.json(comments);
+            if(comments) {
+                console.log(comments);
+                return res.json(comments);
+            }
             else return res.json({'result': 'fail'});
         })
     });
