@@ -446,7 +446,8 @@ module.exports = function (passport) {
                 Comment.find({'article': id}, function(err, comments) {
                     if(err) return res.json({'result': 'fail'});
                     if(comments) {
-                        comments.remove();
+                        for(var i=0; i<comments.length; i++)
+                            comments[i].remove();
                         article.remove();
                         return res.json({'result': 'success'});
                     }
