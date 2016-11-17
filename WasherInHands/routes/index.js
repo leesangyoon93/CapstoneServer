@@ -460,4 +460,9 @@ module.exports = function (passport) {
 
     return router;
 };
+
+router.post('/aaaa', function(req, res) {
+    console.log(req.body);
+    return res.json({'result': 'success'});
+});
 // delete article
