@@ -457,12 +457,35 @@ module.exports = function (passport) {
             else return res.json({'result': 'fail'});
         })
     });
-
     return router;
 };
 
-router.post('/aaaa', function(req, res) {
+router.post('/getWasherInfo', function(req, res) {
     console.log(req.body);
-    return res.json({'result': 'success'});
+    var id = new ObjectId(req.body.id);
+    WasherRoom.findById(id, function(err, washerRoom) {
+        if(err) return res.json({'result': 'fail'});
+        if(washerRoom) {
+            Washer.findOne({'washerRoom': id, module: req.body.washerId}, function(err, washer) {
+                if(err) return res.json({'result': 'fail'});
+                if(washer) {
+                    if(req.body.state == 1) {
+                        washer.isWorking = true;
+                        washer.isTrouble = false;
+                    }
+                    else if(req.body.state == 0) {
+                        washer.isWorking = false;
+                    }
+                    else {
+                        washer.isWorking = false;
+                        washer.isTrouble = true;
+                    }
+                    washer.save();
+                }
+                else return res.json({'result': 'fail'});
+            })
+        }
+        else return res.json({'result': 'fail'});
+    })
 });
 // delete article
