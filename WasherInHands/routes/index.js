@@ -344,7 +344,6 @@ module.exports = function (passport) {
                 Washer.find({'washerRoom': new ObjectId(id)}, function(err, washers) {
                     if(err) return res.json({'result': 'fail'});
                     if(washers) {
-                        console.log(washers);
                         return res.json(washers);
                     }
                     else return res.json({'result': 'fail'});
@@ -392,7 +391,6 @@ module.exports = function (passport) {
         Article.findById(id, function(err, article) {
             if(err) return res.json({'result': 'fail'});
             if(article) {
-                console.log(article);
                 article.title = req.body.title;
                 article.content = req.body.content;
                 var date = new Date().toISOString();
@@ -481,6 +479,7 @@ router.post('/getWasherInfo', function(req, res) {
                         washer.isTrouble = true;
                     }
                     washer.save();
+                    return res.json({'result': 'success'});
                 }
                 else return res.json({'result': 'fail'});
             })
