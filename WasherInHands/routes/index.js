@@ -175,6 +175,8 @@ module.exports = function (passport) {
                         if (washerRoom) {
                             groupArray.push(washerRoom);
                             count++;
+                            console.log(count);
+                            console.log(groupArray);
                         }
                         else count++;
 
