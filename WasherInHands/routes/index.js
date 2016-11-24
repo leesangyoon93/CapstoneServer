@@ -96,14 +96,11 @@ module.exports = function (passport) {
                         newWasherRoom.host = user.userId;
                         newWasherRoom.roomName = req.body.roomName;
                         newWasherRoom.address = req.body.address;
-                        console.log(req.body.address);
                         geocoder.geocode(req.body.address, function(err, res) {
                             if(err) return res.json({'result': 'fail'});
                             else {
-                                console.log(res.results[0].geometry);
-                                console.log(res.results[0].address_components);
-                                newWasherRoom.latitude = res.latitude;
-                                newWasherRoom.longtitude = res.longtitude;
+                                newWasherRoom.latitude = res.res.results[0].geometry.bounds.location.lat;
+                                newWasherRoom.longtitude = res.res.results[0].geometry.bounds.location.lng;
                             }
                         }, {language: 'ko', provider: 'google', api_key: 'AIzaSYAtvE5zlussGrKe2tcMnB9AhqeNmssGQ40', httpAdapter: 'https'});
                         newWasherRoom.members.push(user);
