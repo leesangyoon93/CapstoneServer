@@ -100,13 +100,12 @@ module.exports = function (passport) {
                         geocoder.geocode(req.body.address, function(err, res) {
                             if(err) return res.json({'result': 'fail'});
                             else {
-                                console.log("success");
                                 console.log(res.results[0].geometry);
                                 console.log(res.results[0].address_components);
                                 newWasherRoom.latitude = res.latitude;
                                 newWasherRoom.longtitude = res.longtitude;
                             }
-                        });
+                        }, {language: 'ko'});
                         newWasherRoom.members.push(user);
                         if(user.washerRooms.length == 0 && user.mainRoomName == "")
                             user.mainRoomName = newWasherRoom.roomName;
