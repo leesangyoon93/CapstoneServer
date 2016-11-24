@@ -102,6 +102,7 @@ module.exports = function (passport) {
                                 newWasherRoom.latitude = res.results[0].geometry.location.lat;
                                 newWasherRoom.longtitude = res.results[0].geometry.location.lng;
                                 console.log(newWasherRoom);
+                                newWasherRoom.save();
                             }
                         }, {language: 'ko', provider: 'google', api_key: 'AIzaSYAtvE5zlussGrKe2tcMnB9AhqeNmssGQ40', httpAdapter: 'https'});
                         newWasherRoom.members.push(user);
