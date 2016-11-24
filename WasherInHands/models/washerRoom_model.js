@@ -18,6 +18,8 @@ var WasherRoomSchema = new Schema({
     address: {
         type: String
     },
+    longtitude: Number,
+    latitude: Number,
     members: [{type: Schema.Types.ObjectId, ref: 'User'}]
 });
 

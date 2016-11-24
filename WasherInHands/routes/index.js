@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bcrypt = require("bcrypt-nodejs");
+var NodeGeocoder = require('node-geocoder');
 var router = express.Router();
 var User = mongoose.model('User');
 var WasherRoom = mongoose.model('WasherRoom');
@@ -10,8 +11,21 @@ var Article = mongoose.model('Article');
 var Comment = mongoose.model('Comment');
 var ObjectId = require('mongodb').ObjectId;
 
+
+
 /* GET home page. */
 module.exports = function (passport) {
+    var options = {
+        provider: 'google',
+
+        // Optional depending on the providers
+        httpAdapter: 'https', // Default
+        apiKey: 'AIzaSYAtvE5zlussGrKe2tcMnB9AhqeNmssGQ40', // for Mapquest, OpenCage, Google Premier
+        formatter: null         // 'gpx', 'string', ...
+    };
+
+    var geocoder = NodeGeocoder(options);
+
     router.get('/', function (req, res) {
         res.render('index');
     });
@@ -81,6 +95,13 @@ module.exports = function (passport) {
                         newWasherRoom.host = user.userId;
                         newWasherRoom.roomName = req.body.roomName;
                         newWasherRoom.address = req.body.address;
+                        geocoder.geocode(req.body.address, function(err, res) {
+                            if(err) return res.json({'result': 'fail'});
+                            else {
+                                res.latitude = newWasherRoom.latitude;
+                                res.longtitude = newWasherRoom.longtitude;
+                            }
+                        })
                         newWasherRoom.members.push(user);
                         if(user.washerRooms.length == 0 && user.mainRoomName == "")
                             user.mainRoomName = newWasherRoom.roomName;
@@ -125,6 +146,12 @@ module.exports = function (passport) {
             else return res.json({'result': 'fail'});
         });
     });
+
+    // router.get('/getNearRooms', function(req, res) {
+    //     WasherRoom.find(function(err, washerRooms) {
+    //
+    //     })
+    // })
 
     router.get('/searchGroup', function(req, res) {
         var search = req.query.searchName;
@@ -385,6 +412,10 @@ module.exports = function (passport) {
             else return res.json({'result': 'fail'});
         })
     });
+
+    router.get('/nearGroup', function(req, res) {
+        ////////////
+    });
     
     router.post('/saveArticle', function(req, res) {
         var id = new ObjectId(req.body.articleId);
@@ -488,3 +519,18 @@ router.post('/getWasherInfo', function(req, res) {
     })
 });
 // delete article
+
+
+// // Using callback
+// geocoder.geocode('29 champs elysée paris', function(err, res) {
+//     console.log(res);
+// });
+//
+// // Or using Promise
+// geocoder.geocode('29 champs elysée paris')
+//     .then(function(res) {
+//         console.log(res);
+//     })
+//     .catch(function(err) {
+//         console.log(err);
+//     });
