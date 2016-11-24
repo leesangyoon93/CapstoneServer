@@ -18,9 +18,19 @@ var WasherRoomSchema = new Schema({
     address: {
         type: String
     },
-    longtitude: Number,
-    latitude: Number,
-    members: [{type: Schema.Types.ObjectId, ref: 'User'}]
+    longtitude: {
+        type: Number,
+        default: 0
+    },
+    latitude: {
+        type: Number,
+        default: 0
+    },
+    members: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    enabled: {
+        type: Boolean,
+        default: false
+    }
 });
 
 // WasherRoomSchema.pre('remove', function(next) {
