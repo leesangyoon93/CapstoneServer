@@ -99,8 +99,8 @@ module.exports = function (passport) {
                         geocoder.geocode(req.body.address, function(err, res) {
                             if(err) return res.json({'result': 'fail'});
                             else {
-                                newWasherRoom.latitude = res.res.results[0].geometry.bounds.location.lat;
-                                newWasherRoom.longtitude = res.res.results[0].geometry.bounds.location.lng;
+                                newWasherRoom.latitude = res.results[0].geometry.bounds.location.lat;
+                                newWasherRoom.longtitude = res.results[0].geometry.bounds.location.lng;
                             }
                         }, {language: 'ko', provider: 'google', api_key: 'AIzaSYAtvE5zlussGrKe2tcMnB9AhqeNmssGQ40', httpAdapter: 'https'});
                         newWasherRoom.members.push(user);
