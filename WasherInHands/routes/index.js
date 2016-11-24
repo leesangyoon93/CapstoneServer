@@ -145,7 +145,7 @@ module.exports = function (passport) {
         var result = [];
         var latitude1 = parseFloat(req.query.latitude);
         var longtitude1 = parseFloat(req.query.longtitude);
-        WasherRoom.find.exec(function(err, washerRooms) {
+        WasherRoom.find().exec(function(err, washerRooms) {
             for(var i=0; i<washerRooms.length; i++) {
                 console.log(washerRooms[i].latitude);
                 console.log(washerRooms[i].longtitude);
