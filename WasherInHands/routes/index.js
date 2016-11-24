@@ -95,9 +95,11 @@ module.exports = function (passport) {
                         newWasherRoom.host = user.userId;
                         newWasherRoom.roomName = req.body.roomName;
                         newWasherRoom.address = req.body.address;
+                        console.log(req.body.address);
                         geocoder.geocode(req.body.address, function(err, res) {
                             if(err) return res.json({'result': 'fail'});
                             else {
+                                console.log("success");
                                 newWasherRoom.latitude = res.latitude;
                                 newWasherRoom.longtitude = res.longtitude;
                             }
