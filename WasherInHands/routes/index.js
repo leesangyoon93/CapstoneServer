@@ -187,6 +187,8 @@ module.exports = function (passport) {
 
                     })
                 }
+                if(user.washerRooms.length == 0)
+                    return res.json(groupArray);
             }
             else return res.json({'result': 'fail'});
         });
