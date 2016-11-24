@@ -178,8 +178,11 @@ module.exports = function (passport) {
                         }
                         else count++;
 
-                        if (count == user.washerRooms.length)
+                        if (count == user.washerRooms.length) {
+                            console.log(groupArray);
                             return res.json(groupArray);
+                        }
+
                     })
                 }
             }
