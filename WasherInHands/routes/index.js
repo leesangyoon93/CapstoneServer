@@ -99,6 +99,7 @@ module.exports = function (passport) {
                         geocoder.geocode(req.body.address, function(err, res) {
                             if(err) return res.json({'result': 'fail'});
                             else {
+                                console.log(res);
                                 newWasherRoom.latitude = res.results[0].geometry.location.lat;
                                 newWasherRoom.longtitude = res.results[0].geometry.location.lng;
                                 console.log(newWasherRoom);
@@ -151,8 +152,13 @@ module.exports = function (passport) {
     });
 
     // router.get('/getNearRooms', function(req, res) {
-    //     WasherRoom.find(function(err, washerRooms) {
-    //
+    //     var result = [];
+    //     var latitude = parseInt(req.body.latitude);
+    //     var longtitude = parseInt(req.body.longtitude);
+    //     WasherRoom.find.exec(function(err, washerRooms) {
+    //         for(var i in washerRooms) {
+    //             if(washerRooms[i].latitude >= )
+    //         }
     //     })
     // })
 
