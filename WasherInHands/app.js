@@ -17,7 +17,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
 
-//mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/washerInHands', function(err) {
   if(err) {
     console.log("DB ERROR :", err);

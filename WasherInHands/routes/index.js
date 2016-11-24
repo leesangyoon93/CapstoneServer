@@ -101,10 +101,11 @@ module.exports = function (passport) {
                             if(err) return res.json({'result': 'fail'});
                             else {
                                 console.log("success");
+                                console.log(res);
                                 newWasherRoom.latitude = res.latitude;
                                 newWasherRoom.longtitude = res.longtitude;
                             }
-                        })
+                        });
                         newWasherRoom.members.push(user);
                         if(user.washerRooms.length == 0 && user.mainRoomName == "")
                             user.mainRoomName = newWasherRoom.roomName;
