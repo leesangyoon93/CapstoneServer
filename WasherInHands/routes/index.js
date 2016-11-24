@@ -141,16 +141,22 @@ module.exports = function (passport) {
         });
     });
 
-    // router.get('/getNearRooms', function(req, res) {
-    //     var result = [];
-    //     var latitude = parseInt(req.body.latitude);
-    //     var longtitude = parseInt(req.body.longtitude);
-    //     WasherRoom.find.exec(function(err, washerRooms) {
-    //         for(var i in washerRooms) {
-    //             if(washerRooms[i].latitude >= )
-    //         }
-    //     })
-    // })
+    router.get('/getNearRooms', function(req, res) {
+        var result = [];
+        var latitude1 = parseFloat(req.body.latitude);
+        var longtitude1 = parseFloat(req.body.longtitude);
+        console.log(latitude1);
+        console.log(longtitude1);
+        WasherRoom.find.exec(function(err, washerRooms) {
+            for(var i in washerRooms) {
+                var distance = calDistance(washerRooms[i].latitude, washerRooms[i].longtitude, latitude1, longtitude1);
+                console.log(distance)
+                if(distance <= 1000)
+                    result.push(washerRooms[i]);
+            }
+            return res.json(result);
+        })
+    });
 
     router.get('/searchGroup', function(req, res) {
         var search = req.query.searchName;
@@ -175,16 +181,11 @@ module.exports = function (passport) {
                         if (washerRoom) {
                             groupArray.push(washerRoom);
                             count++;
-                            console.log(count);
-                            console.log(groupArray);
                         }
                         else count++;
 
-                        if (count == user.washerRooms.length) {
-                            console.log(groupArray);
+                        if (count == user.washerRooms.length)
                             return res.json(groupArray);
-                        }
-
                     })
                 }
                 if(user.washerRooms.length == 0)
@@ -418,10 +419,6 @@ module.exports = function (passport) {
             else return res.json({'result': 'fail'});
         })
     });
-
-    router.get('/nearGroup', function(req, res) {
-        ////////////
-    });
     
     router.post('/saveArticle', function(req, res) {
         var id = new ObjectId(req.body.articleId);
@@ -496,7 +493,6 @@ module.exports = function (passport) {
 };
 
 router.post('/getWasherInfo', function(req, res) {
-    console.log(req.body);
     var id = new ObjectId(req.body.id);
     WasherRoom.findById(id, function(err, washerRoom) {
         if(err) return res.json({'result': 'fail'});
@@ -526,17 +522,28 @@ router.post('/getWasherInfo', function(req, res) {
 });
 // delete article
 
+function calDistance(lat1, lon1, lat2, lon2){
 
-// // Using callback
-// geocoder.geocode('29 champs elysée paris', function(err, res) {
-//     console.log(res);
-// });
-//
-// // Or using Promise
-// geocoder.geocode('29 champs elysée paris')
-//     .then(function(res) {
-//         console.log(res);
-//     })
-//     .catch(function(err) {
-//         console.log(err);
-//     });
+    var theta, dist;
+    theta = lon1 - lon2;
+    dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1))
+        * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+    dist = Math.acos(dist);
+    dist = rad2deg(dist);
+
+    dist = dist * 60 * 1.1515;
+    dist = dist * 1.609344;    // 단위 mile 에서 km 변환.
+    dist = dist * 1000.0;      // 단위  km 에서 m 로 변환
+
+    return dist;
+}
+
+// 주어진 도(degree) 값을 라디언으로 변환
+function deg2rad(deg){
+    return parseFloat(deg * Math.PI / parseFloat(180));
+}
+
+// 주어진 라디언(radian) 값을 도(degree) 값으로 변환
+function rad2deg(rad){
+    return parseFloat(rad * parseFloat(180) / Math.PI);
+}
