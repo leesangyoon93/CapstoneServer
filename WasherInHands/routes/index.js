@@ -143,16 +143,14 @@ module.exports = function (passport) {
 
     router.get('/getNearRooms', function(req, res) {
         var result = [];
-        console.log(req.query.latitude);
-        console.log(req.query.longtitude);
         var latitude1 = parseFloat(req.query.latitude);
         var longtitude1 = parseFloat(req.query.longtitude);
-        console.log(latitude1);
-        console.log(longtitude1);
         WasherRoom.find.exec(function(err, washerRooms) {
             for(var i in washerRooms) {
+                console.log(washerRooms[i].latitude);
+                console.log(washerRooms[i].longtitude);
                 var distance = calDistance(washerRooms[i].latitude, washerRooms[i].longtitude, latitude1, longtitude1);
-                console.log(distance)
+                console.log(distance);
                 if(distance <= 1000)
                     result.push(washerRooms[i]);
             }
@@ -536,6 +534,8 @@ function calDistance(lat1, lon1, lat2, lon2){
     dist = dist * 60 * 1.1515;
     dist = dist * 1.609344;    // 단위 mile 에서 km 변환.
     dist = dist * 1000.0;      // 단위  km 에서 m 로 변환
+    console.log("distance");
+    console.log(dist);
 
     return dist;
 }
