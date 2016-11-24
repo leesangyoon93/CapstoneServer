@@ -98,8 +98,8 @@ module.exports = function (passport) {
                         geocoder.geocode(req.body.address, function(err, res) {
                             if(err) return res.json({'result': 'fail'});
                             else {
-                                res.latitude = newWasherRoom.latitude;
-                                res.longtitude = newWasherRoom.longtitude;
+                                newWasherRoom.latitude = res.latitude;
+                                newWasherRoom.longtitude = res.longtitude;
                             }
                         })
                         newWasherRoom.members.push(user);
