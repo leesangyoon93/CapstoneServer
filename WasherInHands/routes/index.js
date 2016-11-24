@@ -99,6 +99,8 @@ module.exports = function (passport) {
                         geocoder.geocode(req.body.address, function(err, res) {
                             if(err) return res.json({'result': 'fail'});
                             else {
+                                console.log(res.results[0].geometry.bounds);
+                                console.log(res.results[0].geometry.bounds.location);
                                 newWasherRoom.latitude = res.results[0].geometry.bounds.location.lat;
                                 newWasherRoom.longtitude = res.results[0].geometry.bounds.location.lng;
                             }
