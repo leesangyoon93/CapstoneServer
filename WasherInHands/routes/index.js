@@ -153,8 +153,7 @@ module.exports = function (passport) {
                 console.log(distance);
                 if(distance <= 1000)
                     result.push(washerRooms[i]);
-                i++;
-                if(i>washerRooms.length)
+                if(i>=washerRooms.length-1)
                     return res.json(result);
             }
         })
