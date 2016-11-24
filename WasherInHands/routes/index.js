@@ -143,8 +143,10 @@ module.exports = function (passport) {
 
     router.get('/getNearRooms', function(req, res) {
         var result = [];
-        var latitude1 = parseFloat(req.body.latitude);
-        var longtitude1 = parseFloat(req.body.longtitude);
+        console.log(req.query.latitude);
+        console.log(req.query.longtitude);
+        var latitude1 = parseFloat(req.query.latitude);
+        var longtitude1 = parseFloat(req.query.longtitude);
         console.log(latitude1);
         console.log(longtitude1);
         WasherRoom.find.exec(function(err, washerRooms) {
