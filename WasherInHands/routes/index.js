@@ -146,15 +146,17 @@ module.exports = function (passport) {
         var latitude1 = parseFloat(req.query.latitude);
         var longtitude1 = parseFloat(req.query.longtitude);
         WasherRoom.find.exec(function(err, washerRooms) {
-            for(var i in washerRooms) {
+            for(var i=0; i<washerRooms.length; i++) {
                 console.log(washerRooms[i].latitude);
                 console.log(washerRooms[i].longtitude);
                 var distance = calDistance(washerRooms[i].latitude, washerRooms[i].longtitude, latitude1, longtitude1);
                 console.log(distance);
                 if(distance <= 1000)
                     result.push(washerRooms[i]);
+                i++;
+                if(i>washerRooms.length)
+                    return res.json(result);
             }
-            return res.json(result);
         })
     });
 
