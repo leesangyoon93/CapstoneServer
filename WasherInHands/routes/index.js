@@ -101,7 +101,8 @@ module.exports = function (passport) {
                             if(err) return res.json({'result': 'fail'});
                             else {
                                 console.log("success");
-                                console.log(res);
+                                console.log(res.results[0].geometry);
+                                console.log(res.results[0].address_components);
                                 newWasherRoom.latitude = res.latitude;
                                 newWasherRoom.longtitude = res.longtitude;
                             }
