@@ -105,7 +105,7 @@ module.exports = function (passport) {
                                 newWasherRoom.latitude = res.latitude;
                                 newWasherRoom.longtitude = res.longtitude;
                             }
-                        }, {language: 'ko'});
+                        }, {language: 'ko', provider: 'google', api_key: 'AIzaSYAtvE5zlussGrKe2tcMnB9AhqeNmssGQ40', httpAdapter: 'https'});
                         newWasherRoom.members.push(user);
                         if(user.washerRooms.length == 0 && user.mainRoomName == "")
                             user.mainRoomName = newWasherRoom.roomName;
