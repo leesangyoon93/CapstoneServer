@@ -11,6 +11,10 @@ var ModuleSchema = new Schema({
     moduleId: {
         type: String,
         unique: true
+    },
+    enabled: {
+        type: Boolean,
+        default: false
     }
 });
 

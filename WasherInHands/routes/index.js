@@ -147,10 +147,7 @@ module.exports = function (passport) {
         var longtitude1 = parseFloat(req.query.longtitude);
         WasherRoom.find().exec(function(err, washerRooms) {
             for(var i=0; i<washerRooms.length; i++) {
-                console.log(washerRooms[i].latitude);
-                console.log(washerRooms[i].longtitude);
                 var distance = calDistance(washerRooms[i].latitude, washerRooms[i].longtitude, latitude1, longtitude1);
-                console.log(distance);
                 if(distance <= 1000)
                     result.push(washerRooms[i]);
                 if(i>=washerRooms.length-1)
@@ -535,8 +532,6 @@ function calDistance(lat1, lon1, lat2, lon2){
     dist = dist * 60 * 1.1515;
     dist = dist * 1.609344;    // 단위 mile 에서 km 변환.
     dist = dist * 1000.0;      // 단위  km 에서 m 로 변환
-    console.log("distance");
-    console.log(dist);
 
     return dist;
 }
