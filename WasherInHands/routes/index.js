@@ -321,7 +321,26 @@ module.exports = function (passport) {
     router.post('/findModule', function(req, res) {
         Module.findOne({'moduleId': req.body.moduleId}, function(err, module) {
             if(err) return res.json({'result': 'fail'});
-            if(module) return res.json({'result': 'success'});
+            if(module) {
+                if(!module.enabled) {
+                    module.enabled = true;
+                    module.save();
+                    return res.json({'result': 'success'});
+                }
+                else return res.json({'result': 'overlap'})
+            }
+            else return res.json({'result': 'fail'});
+        })
+    });
+
+    router.post('/deleteWasher', function(req, res) {
+        Module.findOne({'moduleId': req.body.module}, function(err, module) {
+            if(err) return res.json({'result': 'fail'});
+            if(module) {
+                module.enabled = false;
+                module.save();
+                return res.json({'result': 'success'})
+            }
             else return res.json({'result': 'fail'});
         })
     });
