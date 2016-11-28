@@ -626,7 +626,7 @@ router.post('/getAlarm', function(req, res) {
     User.findOne({'userId': req.body.userId}, function(err, user) {
         if(err) return res.json({'result': 'fail'});
         if(user) {
-            for(var i in timerObject) {
+            for(var i=0; i<timerObject.length; i++) {
                 if(timerObject[i].userId == user.userId) {
                     return res.json({'result': 'success', 'alarm': user.alarm.toString()})
                 }
