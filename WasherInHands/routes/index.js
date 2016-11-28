@@ -16,17 +16,6 @@ var ObjectId = require('mongodb').ObjectId;
 
 /* GET home page. */
 module.exports = function (passport) {
-    // var options = {
-    //     provider: 'google',
-    //
-    //     // Optional depending on the providers
-    //     httpAdapter: 'https', // Default
-    //     apiKey: 'AIzaSYAtvE5zlussGrKe2tcMnB9AhqeNmssGQ40', // for Mapquest, OpenCage, Google Premier
-    //     formatter: null         // 'gpx', 'string', ...
-    // };
-    //
-    // var geocoder = NodeGeocoder(options);
-
     router.get('/', function (req, res) {
         res.render('index');
     });
