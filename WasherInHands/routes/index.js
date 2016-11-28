@@ -561,13 +561,13 @@ router.post('/setAlarm', function(req, res) {
     User.findOne({'userId': req.body.userId}, function(err, user) {
         if(err) return res.json({'result': 'fail'});
         if(user) {
-            user.time = time;
+            user.alarm = time;
             user.save();
             var timer = setInterval(function() {
-                user.time = user.time-1;
+                user.alarm = user.alarm-1;
                 user.save();
-                console.log(user.time);
-                if(user.time <= 0) {
+                console.log(user.alarm);
+                if(user.alarm <= 0) {
                     // var message = new gcm.Message();
                     //
                     // var message = new gcm.Message({
