@@ -11,7 +11,8 @@ var Module = mongoose.model('Module');
 var Article = mongoose.model('Article');
 var Comment = mongoose.model('Comment');
 var ObjectId = require('mongodb').ObjectId;
-
+var gcm = require('node-gcm');
+var fs = require('fs');
 
 
 /* GET home page. */
@@ -527,6 +528,78 @@ router.post('/getWasherInfo', function(req, res) {
     })
 });
 // delete article
+
+// router.post('/sendMessage', function(req, res) {
+//     var message = new gcm.Message();
+//
+//     var message = new gcm.Message({
+//         collapseKey: 'demo',
+//         delayWhileIdle: true,
+//         timeToLive: 3,
+//         data: {
+//             title: '세탁몬 알림 메세지',
+//             message: '세탁이 완료되었습니다! 찾아가주세요.'
+//         }
+//     });
+//
+//     var server_api_key = 'AIzaSyC2UxxXcjO6_x8LiswYgIDRj5c19ccXIKI';
+//     var sender = new gcm.Sender(server_api_key);
+//     var registrationIds = [];
+//
+//     var token = req.body.token;
+//     registrationIds.push(token);
+//
+//     sender.send(message, registrationIds, 4, function (err, result) {
+//         console.log(result);
+//         return res.json({'result': 'success'})
+//     });
+// })
+
+router.post('/setAlarm', function(req, res) {
+    var time = req.body.time;
+    var token = req.body.token;
+    User.findOne({'userId': req.body.userId}, function(err, user) {
+        if(err) return res.json({'result': 'fail'});
+        if(user) {
+            user.time = time;
+            user.save();
+            setInterval(function() {
+                user.time = user.time-1;
+                user.save();
+                console.log(user.time);
+                if(user.time <= 0) {
+                    // var message = new gcm.Message();
+                    //
+                    // var message = new gcm.Message({
+                    //     collapseKey: 'demo',
+                    //     delayWhileIdle: true,
+                    //     timeToLive: 3,
+                    //     data: {
+                    //         title: '세탁몬 알림 메세지',
+                    //         message: '세탁이 완료되었습니다! 찾아가주세요.'
+                    //     }
+                    // });
+                    //
+                    // var server_api_key = 'AIzaSyC2UxxXcjO6_x8LiswYgIDRj5c19ccXIKI';
+                    // var sender = new gcm.Sender(server_api_key);
+                    // var registrationIds = [];
+                    //
+                    // var token = token;
+                    // registrationIds.push(token);
+                    //
+                    // sender.send(message, registrationIds, 4, function (err, result) {
+                    //     console.log(result);
+                    //     return res.json({'result': 'success'})
+                    // });
+                    console.log("complete");
+                }
+            }, 1000);
+            return res.json({'result': 'success'})
+        }
+        else return res.json({'result': 'fail'});
+    })
+
+})
 
 function calDistance(lat1, lon1, lat2, lon2){
 

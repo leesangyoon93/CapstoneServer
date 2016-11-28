@@ -31,6 +31,10 @@ var UserSchema = new Schema({
         type: String,
         default: ""
     },
+    alarm: {
+        type: Number,
+        default: 0
+    },
     washerRooms: [{type: Schema.Types.ObjectId, ref: 'WasherRoom'}]
 });
 
