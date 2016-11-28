@@ -554,13 +554,22 @@ router.post('/getWasherInfo', function(req, res) {
 //         return res.json({'result': 'success'})
 //     });
 // })
+
+var timerObject = [];
+
 router.post('/stopAlarm', function(req, res) {
-    User.findOne({'userid': req.body.userId}, function(err, user) {
+    User.findOne({'userId': req.body.userId}, function(err, user) {
         if(err) return res.json({'result': 'fail'});
         if(user) {
             user.alarm = 0;
-            user.timer(false);
             user.save();
+            for(var i in timerObject) {
+                if(timerObject[i].userId == user.userId) {
+                    clearInterval(timerObject[i].timer);
+                    timerObject.remove(i);
+                    break;
+                }
+            }
             return res.json({'result': 'success'})
         }
         else return res.json({'result': 'fail'});
@@ -575,7 +584,37 @@ router.post('/setAlarm', function(req, res) {
         if(user) {
             user.alarm = time;
             user.save();
-            user.timer(true);
+            var timer = setInterval(function () {
+                user.alarm = user.alarm - 1;
+                user.save();
+                if (user.alarm <= 0) {
+                    // var message = new gcm.Message();
+                    //
+                    // var message = new gcm.Message({
+                    //     collapseKey: 'demo',
+                    //     delayWhileIdle: true,
+                    //     timeToLive: 3,
+                    //     data: {
+                    //         title: '세탁몬 알림 메세지',
+                    //         message: '세탁이 완료되었습니다! 찾아가주세요.'
+                    //     }
+                    // });
+                    //
+                    // var server_api_key = 'AIzaSyC2UxxXcjO6_x8LiswYgIDRj5c19ccXIKI';
+                    // var sender = new gcm.Sender(server_api_key);
+                    // var registrationIds = [];
+                    //
+                    // var token = token;
+                    // registrationIds.push(token);
+                    //
+                    // sender.send(message, registrationIds, 4, function (err, result) {
+                    //     console.log(result);
+                    //     return res.json({'result': 'success'})
+                    // });
+                    clearInterval(timer);
+                }
+            }, 1000);
+            timerObject.push({'userId': user.userId, 'timer': timer});
             user.save();
             return res.json({'result': 'success'})
         }
@@ -587,7 +626,12 @@ router.post('/getAlarm', function(req, res) {
     User.findOne({'userId': req.body.userId}, function(err, user) {
         if(err) return res.json({'result': 'fail'});
         if(user) {
-            return res.json({'result': 'success', 'alarm': user.alarm.toString()})
+            for(var i in timerObject) {
+                if(timerObject[i].userId == user.userId) {
+                    return res.json({'result': 'success', 'alarm': user.alarm.toString()})
+                }
+            }
+            return res.json({'result': 'no'});
         }
         else return res.json({'result': 'fail'});
     })

@@ -35,43 +35,6 @@ var UserSchema = new Schema({
         type: Number,
         default: 0
     },
-    timer: {
-        type: function (state) {
-            var timer = setInterval(function () {
-                this.alarm = this.alarm - 1;
-                this.save();
-                if (this.alarm <= 0) {
-                    // var message = new gcm.Message();
-                    //
-                    // var message = new gcm.Message({
-                    //     collapseKey: 'demo',
-                    //     delayWhileIdle: true,
-                    //     timeToLive: 3,
-                    //     data: {
-                    //         title: '세탁몬 알림 메세지',
-                    //         message: '세탁이 완료되었습니다! 찾아가주세요.'
-                    //     }
-                    // });
-                    //
-                    // var server_api_key = 'AIzaSyC2UxxXcjO6_x8LiswYgIDRj5c19ccXIKI';
-                    // var sender = new gcm.Sender(server_api_key);
-                    // var registrationIds = [];
-                    //
-                    // var token = token;
-                    // registrationIds.push(token);
-                    //
-                    // sender.send(message, registrationIds, 4, function (err, result) {
-                    //     console.log(result);
-                    //     return res.json({'result': 'success'})
-                    // });
-                    clearInterval(timer);
-                }
-            }, 1000);
-            if(!state) {
-                clearInterval(timer);
-            }
-        }
-    },
     washerRooms: [{type: Schema.Types.ObjectId, ref: 'WasherRoom'}]
 });
 
