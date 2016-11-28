@@ -563,10 +563,10 @@ router.post('/stopAlarm', function(req, res) {
         if(user) {
             user.alarm = 0;
             user.save();
-            for(var i in timerObject) {
+            for(var i=0; i<Object.keys(timerObject); i++) {
                 if(timerObject[i].userId == user.userId) {
                     clearInterval(timerObject[i].timer);
-                    timerObject.remove(i);
+                    timerObject.splice(i, 1);
                     break;
                 }
             }
