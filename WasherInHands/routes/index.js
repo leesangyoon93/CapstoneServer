@@ -563,7 +563,7 @@ router.post('/setAlarm', function(req, res) {
         if(user) {
             user.time = time;
             user.save();
-            setInterval(function() {
+            var timer = setInterval(function() {
                 user.time = user.time-1;
                 user.save();
                 console.log(user.time);
@@ -591,6 +591,7 @@ router.post('/setAlarm', function(req, res) {
                     //     console.log(result);
                     //     return res.json({'result': 'success'})
                     // });
+                    clearInterval(timer);
                     console.log("complete");
                 }
             }, 1000);
