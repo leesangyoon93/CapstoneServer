@@ -588,7 +588,7 @@ router.post('/setAlarm', function(req, res) {
                 user.alarm = user.alarm - 1;
                 var token = tmp;
                 user.save();
-                if (user.alarm <= 0) {
+                if (user.alarm <= 1) {
                     var message = new gcm.Message();
 
                     var message = new gcm.Message({
