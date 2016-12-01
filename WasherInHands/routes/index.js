@@ -588,32 +588,32 @@ router.post('/setAlarm', function(req, res) {
                 user.alarm = user.alarm - 1;
                 user.save();
                 if (user.alarm <= 0) {
-                    // var message = new gcm.Message();
-                    //
-                    // var message = new gcm.Message({
-                    //     collapseKey: 'demo',
-                    //     delayWhileIdle: true,
-                    //     timeToLive: 3,
-                    //     data: {
-                    //         title: '세탁몬 알림 메세지',
-                    //         message: '세탁이 완료되었습니다! 찾아가주세요.'
-                    //     }
-                    // });
-                    //
-                    // var server_api_key = 'AIzaSyC2UxxXcjO6_x8LiswYgIDRj5c19ccXIKI';
-                    // var sender = new gcm.Sender(server_api_key);
-                    // var registrationIds = [];
-                    //
-                    // var token = token;
-                    // registrationIds.push(token);
-                    //
-                    // sender.send(message, registrationIds, 4, function (err, result) {
-                    //     console.log(result);
-                    //     return res.json({'result': 'success'})
-                    // });
+                    var message = new gcm.Message();
+
+                    var message = new gcm.Message({
+                        collapseKey: 'demo',
+                        delayWhileIdle: true,
+                        timeToLive: 3,
+                        data: {
+                            title: '세탁몬 알림 메세지',
+                            message: '세탁이 완료되었습니다! 찾아가주세요.'
+                        }
+                    });
+
+                    var server_api_key = 'AIzaSyC2UxxXcjO6_x8LiswYgIDRj5c19ccXIKI';
+                    var sender = new gcm.Sender(server_api_key);
+                    var registrationIds = [];
+
+                    var token = token;
+                    registrationIds.push(token);
+
+                    sender.send(message, registrationIds, 4, function (err, result) {
+                        console.log(result);
+                        return res.json({'result': 'success'})
+                    });
                     clearInterval(timer);
                 }
-            }, 1000);
+            }, 1000*60);
             timerObject.push({'userId': user.userId, 'timer': timer});
             user.save();
             return res.json({'result': 'success'})
