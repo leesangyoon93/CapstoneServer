@@ -578,7 +578,7 @@ router.post('/stopAlarm', function(req, res) {
 
 router.post('/setAlarm', function(req, res) {
     var time = req.body.time;
-    var token = req.body.token;
+    var tmp = req.body.token;
     User.findOne({'userId': req.body.userId}, function(err, user) {
         if(err) return res.json({'result': 'fail'});
         if(user) {
@@ -586,6 +586,7 @@ router.post('/setAlarm', function(req, res) {
             user.save();
             var timer = setInterval(function () {
                 user.alarm = user.alarm - 1;
+                var token = tmp;
                 user.save();
                 if (user.alarm <= 0) {
                     var message = new gcm.Message();
@@ -604,12 +605,11 @@ router.post('/setAlarm', function(req, res) {
                     var sender = new gcm.Sender(server_api_key);
                     var registrationIds = [];
 
-                    var token = token;
                     registrationIds.push(token);
 
                     sender.send(message, registrationIds, 4, function (err, result) {
                         console.log(result);
-                        
+
                     });
                     clearInterval(timer);
                 }
