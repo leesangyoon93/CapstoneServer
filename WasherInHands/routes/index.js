@@ -609,7 +609,7 @@ router.post('/setAlarm', function(req, res) {
 
                     sender.send(message, registrationIds, 4, function (err, result) {
                         console.log(result);
-                        return res.json({'result': 'success'})
+                        
                     });
                     clearInterval(timer);
                 }
