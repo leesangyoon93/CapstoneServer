@@ -499,6 +499,8 @@ module.exports = function (passport) {
     return router;
 };
 
+var washerTimer = [];
+
 router.post('/getWasherInfo', function(req, res) {
     var id = new ObjectId(req.body.id);
     WasherRoom.findById(id, function(err, washerRoom) {
@@ -510,13 +512,33 @@ router.post('/getWasherInfo', function(req, res) {
                     if(req.body.state == 1) {
                         washer.isWorking = true;
                         washer.isTrouble = false;
+                        var timer = setInterval(function() {
+                            washer.runTime = washer.runTime + 1;
+                        }, 1000*60);
+                        washerTimer.push({'washerId': washer._id, 'timer': timer});
                     }
                     else if(req.body.state == 0) {
                         washer.isWorking = false;
+                        washer.runTime = 0;
+                        for(var i=0; i<Object.keys(washerTimer); i++) {
+                            if(washerTimer[i].washerId == washer._id) {
+                                clearInterval(washerTimer[i].timer);
+                                washerTimer.splice(i, 1);
+                                break;
+                            }
+                        }
                     }
                     else {
                         washer.isWorking = false;
                         washer.isTrouble = true;
+                        washer.runTime = 0;
+                        for(var i=0; i<Object.keys(washerTimer); i++) {
+                            if(washerTimer[i].washerId == washer._id) {
+                                clearInterval(washerTimer[i].timer);
+                                washerTimer.splice(i, 1);
+                                break;
+                            }
+                        }
                     }
                     washer.save();
                     return res.json({'result': 'success'});
@@ -528,32 +550,6 @@ router.post('/getWasherInfo', function(req, res) {
     })
 });
 // delete article
-
-// router.post('/sendMessage', function(req, res) {
-//     var message = new gcm.Message();
-//
-//     var message = new gcm.Message({
-//         collapseKey: 'demo',
-//         delayWhileIdle: true,
-//         timeToLive: 3,
-//         data: {
-//             title: '세탁몬 알림 메세지',
-//             message: '세탁이 완료되었습니다! 찾아가주세요.'
-//         }
-//     });
-//
-//     var server_api_key = 'AIzaSyC2UxxXcjO6_x8LiswYgIDRj5c19ccXIKI';
-//     var sender = new gcm.Sender(server_api_key);
-//     var registrationIds = [];
-//
-//     var token = req.body.token;
-//     registrationIds.push(token);
-//
-//     sender.send(message, registrationIds, 4, function (err, result) {
-//         console.log(result);
-//         return res.json({'result': 'success'})
-//     });
-// })
 
 var timerObject = [];
 
