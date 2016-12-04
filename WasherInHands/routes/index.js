@@ -521,17 +521,16 @@ router.post('/getWasherInfo', function(req, res) {
                             console.log(washer.runTime);
                             washer.save();
                         }, 1000*60);
-                        washerTimer.push({'washerId': washer._id, 'timer': timer});
+                        washerTimer.push({'module': washer.module, 'timer': timer});
                     }
                     else if(req.body.state == 0) {
                         washer.isWorking = false;
                         washer.runTime = 0;
                         washer.save();
                         for(var i=0; i<washerTimer.length; i++) {
-                            if(washerTimer[i].washerId == washer._id) {
+                            if(washerTimer[i].module == washer.module) {
                                 clearInterval(washerTimer[i].timer);
                                 washerTimer.splice(i, 1);
-                                washer.save();
                                 break;
                             }
                         }
@@ -542,10 +541,9 @@ router.post('/getWasherInfo', function(req, res) {
                         washer.runTime = 0;
                         washer.save();
                         for(var i=0; i<washerTimer.length; i++) {
-                            if(washerTimer[i].washerId == washer._id) {
+                            if(washerTimer[i].module == washer.module) {
                                 clearInterval(washerTimer[i].timer);
                                 washerTimer.splice(i, 1);
-                                washer.save();
                                 break;
                             }
                         }
