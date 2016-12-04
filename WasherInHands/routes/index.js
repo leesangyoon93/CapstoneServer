@@ -523,7 +523,7 @@ router.post('/getWasherInfo', function(req, res) {
                     else if(req.body.state == 0) {
                         washer.isWorking = false;
                         washer.runTime = 0;
-                        for(var i=0; i<Object.keys(washerTimer); i++) {
+                        for(var i=0; i<washerTimer.length; i++) {
                             if(washerTimer[i].washerId == washer._id) {
                                 clearInterval(washerTimer[i].timer);
                                 washerTimer.splice(i, 1);
