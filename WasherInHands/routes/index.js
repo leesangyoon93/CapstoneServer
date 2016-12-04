@@ -513,6 +513,8 @@ router.post('/getWasherInfo', function(req, res) {
                     if(req.body.state == 1) {
                         washer.isWorking = true;
                         washer.isTrouble = false;
+                        washer.runTime = 1;
+                        washer.save();
                         var timer = setInterval(function() {
                             washer.runTime = washer.runTime + 1;
                             console.log(washer.runTime);
@@ -523,6 +525,7 @@ router.post('/getWasherInfo', function(req, res) {
                     else if(req.body.state == 0) {
                         washer.isWorking = false;
                         washer.runTime = 0;
+                        washer.save();
                         for(var i=0; i<washerTimer.length; i++) {
                             if(washerTimer[i].washerId == washer._id) {
                                 clearInterval(washerTimer[i].timer);
@@ -536,7 +539,8 @@ router.post('/getWasherInfo', function(req, res) {
                         washer.isWorking = false;
                         washer.isTrouble = true;
                         washer.runTime = 0;
-                        for(var i=0; i<Object.keys(washerTimer); i++) {
+                        washer.save();
+                        for(var i=0; i<washerTimer.length; i++) {
                             if(washerTimer[i].washerId == washer._id) {
                                 clearInterval(washerTimer[i].timer);
                                 washerTimer.splice(i, 1);
