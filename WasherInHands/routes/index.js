@@ -515,6 +515,7 @@ router.post('/getWasherInfo', function(req, res) {
                         washer.isTrouble = false;
                         var timer = setInterval(function() {
                             washer.runTime = washer.runTime + 1;
+                            console.log(washer.runTime);
                             washer.save();
                         }, 1000*60);
                         washerTimer.push({'washerId': washer._id, 'timer': timer});
