@@ -502,6 +502,7 @@ module.exports = function (passport) {
 var washerTimer = [];
 
 router.post('/getWasherInfo', function(req, res) {
+    console.log(washerTimer);
     console.log(req.body);
     var id = new ObjectId(req.body.id);
     WasherRoom.findById(id, function(err, washerRoom) {
