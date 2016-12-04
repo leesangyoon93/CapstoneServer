@@ -363,7 +363,7 @@ module.exports = function (passport) {
                             washer.x = machines[j].x;
                             washer.y = machines[j].y;
                             washer.module = machines[j].module;
-                            Module.findOne({moduleId: machined[j].module}, function(err, module) {
+                            Module.findOne({moduleId: machines[j].module}, function(err, module) {
                                 module.enabled = true;
                                 module.save();
                             });
