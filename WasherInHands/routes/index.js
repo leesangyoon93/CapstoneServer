@@ -347,7 +347,7 @@ module.exports = function (passport) {
     router.post('/saveGroup', function (req, res) {
         var machines = JSON.parse(req.body.machine);
         var count = 0;
-
+        console.log(machines);
         WasherRoom.findOne({'roomName': req.body.roomName}, function(err, washerRoom) {
             if(err) return res.json({'result': 'fail'});
             if(washerRoom) {
