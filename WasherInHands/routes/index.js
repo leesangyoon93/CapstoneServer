@@ -502,7 +502,6 @@ module.exports = function (passport) {
 var washerTimer = [];
 
 router.post('/getWasherInfo', function(req, res) {
-    console.log(washerTimer);
     console.log(req.body);
     var id = new ObjectId(req.body.id);
     WasherRoom.findById(id, function(err, washerRoom) {
@@ -518,7 +517,6 @@ router.post('/getWasherInfo', function(req, res) {
                         washer.save();
                         var timer = setInterval(function() {
                             washer.runTime = washer.runTime + 1;
-                            console.log(washer.runTime);
                             washer.save();
                         }, 1000*60);
                         washerTimer.push({'module': washer.module, 'timer': timer});
