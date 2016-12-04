@@ -324,8 +324,6 @@ module.exports = function (passport) {
             if(err) return res.json({'result': 'fail'});
             if(module) {
                 if(!module.enabled) {
-                    module.enabled = true;
-                    module.save();
                     return res.json({'result': 'success'});
                 }
                 else return res.json({'result': 'overlap'})
@@ -365,6 +363,10 @@ module.exports = function (passport) {
                             washer.x = machines[j].x;
                             washer.y = machines[j].y;
                             washer.module = machines[j].module;
+                            Module.findOne({moduleId: machined[j].module}, function(err, module) {
+                                module.enabled = true;
+                                module.save();
+                            });
                             washer.save();
                             count++;
                             if(count == machines.length)
