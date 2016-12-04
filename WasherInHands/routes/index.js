@@ -515,6 +515,7 @@ router.post('/getWasherInfo', function(req, res) {
                         washer.isTrouble = false;
                         var timer = setInterval(function() {
                             washer.runTime = washer.runTime + 1;
+                            washer.save();
                         }, 1000*60);
                         washerTimer.push({'washerId': washer._id, 'timer': timer});
                     }
@@ -525,6 +526,7 @@ router.post('/getWasherInfo', function(req, res) {
                             if(washerTimer[i].washerId == washer._id) {
                                 clearInterval(washerTimer[i].timer);
                                 washerTimer.splice(i, 1);
+                                washer.save();
                                 break;
                             }
                         }
@@ -537,6 +539,7 @@ router.post('/getWasherInfo', function(req, res) {
                             if(washerTimer[i].washerId == washer._id) {
                                 clearInterval(washerTimer[i].timer);
                                 washerTimer.splice(i, 1);
+                                washer.save();
                                 break;
                             }
                         }
